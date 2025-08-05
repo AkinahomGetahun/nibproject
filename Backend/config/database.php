@@ -65,7 +65,7 @@ return [
         // remotedb
         'remote_mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_REMOTE_HOST', '127.0.0.1'),
+            // 'host' => env('DB_REMOTE_HOST', '127.0.0.1'),
             'port' => env('DB_REMOTE_PORT', '3306'),
             'database' => env('DB_REMOTE_DATABASE', 'forge'),
             'username' => env('DB_REMOTE_USERNAME', 'forge'),
