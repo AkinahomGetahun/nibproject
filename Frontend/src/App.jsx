@@ -19,8 +19,8 @@ function App() {
         <Route path="production" element={<Production />} />
         <Route path="claimtable" element={<ClaimTable />} />
         <Route path="productiontable" element={<ProductionTable />} />
-        <Route path="editproduction" element={<ProductionDataEdit />} />
-        <Route path="editclaims" element={<ClaimDataEdit />} />
+        <Route path="editproduction/:id" element={<ProductionDataEdit />} />
+        <Route path="editclaims/:id" element={<ClaimDataEdit />} />
       </Route>
       {/* <Route path="/signup" element={<NavBar />}> */}
       <Route path="signup" element={<SignUp />} />

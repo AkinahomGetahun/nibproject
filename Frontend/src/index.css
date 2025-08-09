@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+    --breakpoint-sm: 30rem; 
+    --breakpoint-md: 48rem; 
+    --breakpoint-lg: 64rem; 
+    --breakpoint-xl: 90rem;
+    }
+/*sm 40rem (640px)	@media (width >= 40rem) { ... }
+md	48rem (768px)	@media (width >= 48rem) { ... }
+lg	64rem (1024px)	@media (width >= 64rem) { ... }
+xl	80rem (1280px) */
+
 .ant-steps .ant-steps-item-finish .ant-steps-item-icon {
   background-color: #ca8811 !important;
   border-color: #ca8811 !important;
