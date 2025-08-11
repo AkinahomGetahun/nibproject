@@ -9,9 +9,9 @@ import csv from "../assets/images/csv.png";
 
 const Export = ({ onExport }) => (
   <div className="flex">
-    <button className="text-white py-1 rounded-lg text-sm flex gap-2">
+    {/* <button className="text-white py-1 rounded-lg text-sm flex gap-2">
       <img src={pdf} className="w-10" />
-    </button>
+    </button> */}
     <button
       onClick={onExport}
       className="text-white py-1 rounded-lg text-sm flex gap-2"
@@ -100,6 +100,63 @@ function ProductionTable() {
       .toLowerCase()
       .includes(filterText.toLowerCase())
   );
+  const suminsured = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.suminsured) || 0),
+    0
+  );
+
+  const totpremium = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.totpremium) || 0),
+    0
+  );
+  const totcommission = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.totcommission) || 0),
+    0
+  );
+
+  const netpremium = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.netpremium) || 0),
+    0
+  );
+  const totvat = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.totvat) || 0),
+    0
+  );
+  const dataWithTotal = [
+    ...filteredData,
+    {
+      id: "totalrow",
+      branchcode: "Total",
+      processingdate: "-",
+      policynumber: "-",
+      clientname: "-",
+      agentname: "-",
+      effectivedate:"-",
+      enddate: "-",
+      suminsured: suminsured,
+      totpremium: totpremium,
+      totcommission: totcommission,
+      netpremium: netpremium,
+      totvat: totvat,
+      salesperson: "-",
+      naicom: "-",
+      transactiontype: "-",
+      channel: "-",
+      policytype: "-",
+      currency: "-",
+      actions: " ",
+    },
+  ];
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.branchcode === "Total",
+      style: {
+        fontWeight: "bold",
+        backgroundColor: "#f7c9a0",
+        color: "#000",
+      },
+    },
+  ];
   const handleDelete = async (id) => {
     try {
       await deleteProduction(id);
@@ -200,7 +257,7 @@ function ProductionTable() {
               <Search size={20} color="#292524" />
             </span>
             <input
-              className="w-30 sm:w-40 border border-2 border-stone-500 rounded-2xl flex gap-3 outline-none px-8 text-stone-200"
+              className="w-30 sm:w-40 border-2 border-stone-500 rounded-2xl flex gap-3 outline-none px-8 text-stone-200"
               type="search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
@@ -230,10 +287,12 @@ function ProductionTable() {
         transition={Bounce}
       />
       <DataTable
+        keyField="id"
         columns={columns}
-        data={filteredData}
+        data={dataWithTotal}
         customStyles={customStyles}
         actions={actionsMemo}
+        conditionalRowStyles={conditionalRowStyles}
         selectableRows
         highlightOnHover
         persistTableHead

@@ -1,59 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Plus, Search, FileSpreadsheet, Trash2, SquarePen } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Trash2,
+  SquarePen,
+  EyeIcon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import useStore from "../store/useStore";
 import pdf from "../assets/images/pdf.png";
 import csv from "../assets/images/csv.png";
-
-const Export = ({ onExport }) => (
-  <div className="flex">
-    <button className="text-white py-1 rounded-lg text-sm flex gap-2">
-      <img src={pdf} className="w-10" />
-    </button>
-    <button
-      onClick={onExport}
-      className="text-white py-1 rounded-lg text-sm flex gap-2"
-    >
-      <img src={csv} className="w-10" />
-    </button>
-  </div>
-);
-
-// Converts JSON data to CSV string
-const convertArrayOfObjectsToCSV = (array) => {
-  if (!array || !array.length) return null;
-  const columnDelimiter = ",";
-  const lineDelimiter = "\n";
-  const keys = Object.keys(array[0]);
-
-  let result = keys.join(columnDelimiter);
-  result += lineDelimiter;
-
-  array.forEach((item) => {
-    keys.forEach((key, index) => {
-      if (index > 0) result += columnDelimiter;
-      result += item[key];
-    });
-    result += lineDelimiter;
-  });
-
-  return result;
-};
-
-// Triggers CSV download in browser
-const downloadCSV = (array) => {
-  const link = document.createElement("a");
-  let csv = convertArrayOfObjectsToCSV(array);
-  if (!csv) return;
-
-  const filename = "ClaimsData.csv";
-  csv = `data:text/csv;charset=utf-8,${csv}`;
-  link.setAttribute("href", encodeURI(csv));
-  link.setAttribute("download", filename);
-  link.click();
-};
+import { useReactToPrint } from "react-to-print";
 
 const customStyles = {
   rows: {
@@ -93,6 +52,57 @@ function ClaimTable() {
   useEffect(() => {
     console.log("claims:", claims);
   }, [claims]);
+  //  const componentRef = useRef();
+  //  const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  //  })
+  const Export = ({ onExport }) => (
+    <div className="flex">
+      {/* <button onClick={handlePrint} className="text-white py-1 rounded-lg text-sm flex gap-2">
+      <img src={pdf} className="w-10" />
+    </button> */}
+      <button
+        onClick={onExport}
+        className="text-white py-1 rounded-lg text-sm flex gap-2"
+      >
+        <img src={csv} className="w-10" />
+      </button>
+    </div>
+  );
+
+  // Converts JSON data to CSV string
+  const convertArrayOfObjectsToCSV = (array) => {
+    if (!array || !array.length) return null;
+    const columnDelimiter = ",";
+    const lineDelimiter = "\n";
+    const keys = Object.keys(array[0]);
+
+    let result = keys.join(columnDelimiter);
+    result += lineDelimiter;
+
+    array.forEach((item) => {
+      keys.forEach((key, index) => {
+        if (index > 0) result += columnDelimiter;
+        result += item[key];
+      });
+      result += lineDelimiter;
+    });
+
+    return result;
+  };
+
+  // Triggers CSV download in browser
+  const downloadCSV = (array) => {
+    const link = document.createElement("a");
+    let csv = convertArrayOfObjectsToCSV(array);
+    if (!csv) return;
+
+    const filename = "ClaimsData.csv";
+    csv = `data:text/csv;charset=utf-8,${csv}`;
+    link.setAttribute("href", encodeURI(csv));
+    link.setAttribute("download", filename);
+    link.click();
+  };
 
   const actionsMemo = useMemo(
     () => <Export onExport={() => downloadCSV(claims)} />,
@@ -104,6 +114,65 @@ function ClaimTable() {
       .toLowerCase()
       .includes(filterText.toLowerCase())
   );
+
+  //calculated sum
+  const totalClaimsPaidSum = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.totalclaimspaid) || 0),
+    0
+  );
+
+  const totalRecoverySum = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.totalrecovery) || 0),
+    0
+  );
+  const treatyrecovery = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.treatyrecovery) || 0),
+    0
+  );
+
+  const facrecovery = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.facrecovery) || 0),
+    0
+  );
+  const salvage = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.salvage) || 0),
+    0
+  );
+
+  const dataWithTotal = [
+    ...filteredData,
+    {
+      claimnumber: "Total",
+      branch: "-",
+      policyclass: "-",
+      policynumber: "-",
+      totalclaimspaid: totalClaimsPaidSum,
+      coinsurerrecovery: "-",
+      treatyrecovery: treatyrecovery,
+      facrecovery: facrecovery,
+      salvage: salvage,
+      totalrecovery: totalRecoverySum,
+      insured: "-",
+      dateofloss: "-",
+      notificationdate: "-",
+      regdate: "-",
+      dateclaimpaid: "-",
+      descriptionofloss: "-",
+      risktype: "-",
+      agency: "-",
+    },
+  ];
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.claimnumber === "Total",
+      style: {
+        fontWeight: "bold",
+        backgroundColor: "#f7c9a0",
+        color: "#000",
+      },
+    },
+  ];
+  //end
 
   const handleDelete = async (id) => {
     try {
@@ -187,11 +256,13 @@ function ClaimTable() {
       name: "Actions",
       cell: (row) => (
         <div className="flex gap-2">
+         
           <Link to={`/editclaims/${row.id}`}>
             <button>
               <SquarePen color="#fc8823" size={20} />
             </button>
           </Link>
+
           <div>
             <button onClick={() => handleDelete(row.id)}>
               <Trash2 color="#851004" size={20} />
@@ -214,7 +285,7 @@ function ClaimTable() {
               <Search size={20} color="#292524" />
             </span>
             <input
-              className="w-30 sm:w-40 border border-2 border-stone-500 rounded-2xl flex gap-3 outline-none px-8 text-stone-200"
+              className="w-30 sm:w-40 border-2 border-stone-500 rounded-2xl flex gap-3 outline-none px-8 text-stone-200"
               type="search"
               placeholder="Search..."
               onChange={(e) => setFilterText(e.target.value)}
@@ -230,26 +301,27 @@ function ClaimTable() {
           </Link>
         </div>
       </div>
-       <ToastContainer
-            position="top-center"
-            autoClose={1500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            transition={Bounce}
-          />
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        transition={Bounce}
+      />
       <DataTable
         columns={columns}
-        data={filteredData}
+        data={dataWithTotal}
         customStyles={customStyles}
         actions={actionsMemo}
         selectableRows
         highlightOnHover
         persistTableHead
+        conditionalRowStyles={conditionalRowStyles}
         pagination
         paginationComponentOptions={{
           rowsPerPageText: "",

@@ -57,7 +57,7 @@ function Login() {
         <Link to="/">
           <img src={Nib} className="w-70 h-20" />
         </Link>
-        <Link to="/signup">
+        <Link to="/login">
           <CircleUser color="#0e0702ff" size={45} className="mx-20" />
         </Link>
       </div>

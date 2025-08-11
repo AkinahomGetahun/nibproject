@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronDown } from "lucide-react";
+
 function claim() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -38,222 +41,267 @@ function claim() {
       toast.success("Submitted Claims Data Successfully!");
       setTimeout(() => {
         navigate("/claimtable");
-      }, 3500);
+      }, 2500);
     } catch (error) {
-      console.log(error);
 
-      const message =
-        error.response?.data?.message ||
-        "Something went wrong while submitting.";
+      console.error("Error submitting claim:", error);
+
+      let message =
+        "Something went wrong while submitting. Please try again later.";
+
+      if (error.response) {
+        // Check if backend provides a specific error message
+        const backendMessage = error.response.data?.message;
+
+        if (typeof backendMessage === "string") {
+          // Use it only if it's a simple string
+          message = backendMessage;
+        }
+        if (message.length > 200) {
+          message = "An error occurred. Please check your input and try again.";
+        } else if (Array.isArray(backendMessage)) {
+          // If it's a list of messages, use the first one
+          message = backendMessage[0] || message;
+        } else if (typeof error.response.data === "string") {
+          // Sometimes the error is sent directly as a string
+          message = error.response.data;
+        }
+      }
 
       toast.error(message);
     }
 
     console.log(formData);
   };
-  
+
   return (
-    <div className="flex flex-col items-center justify-center  border-2 border-stone-200  mx-auto rounded-md bg-stone-50 ">
+    <div className=" flex flex-col items-center justify-center lg:w-[1000px] border-2 border-stone-200  mx-auto rounded-md bg-stone-50 ">
       <div className="">
         <form onSubmit={handleSubmit}>
-          <h1 className="text-[23px] underline py-6 px-3 ">Claims Data Form</h1>
+          <div className="flex justify-between py-6">
+            <div>
+              <h1 className="text-[23px] underline px-3 lg:px-0">Claims Data Form</h1>
+            </div>
+            {/* <Menu as="div" className="relative inline-block">
+              <MenuButton className="inline-flex gap-x-22 rounded-md bg-stone-100 px-3 py-2 text-sm  text-stone-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-stone-50">
+                DropDown
+                <ChevronDown className="-mr-1 size-5 text-gray-400" />
+              </MenuButton>
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+              >
+                <div className="py-1">
+                  <Link to="/production">
+                    <MenuItem className=" px-4 py-2 text-md text-gray-700 data-focus:bg-[#f7c9a0] data-focus:text-gray-900 data-focus:outline-hidden">
+                      <p>form 1</p>
+                    </MenuItem>
+                  </Link>
+                  <MenuItem className=" px-4 py-2 text-md text-gray-700 data-focus:bg-[#f7c9a0] data-focus:text-gray-900 data-focus:outline-hidden">
+                    <p>form 2</p>
+                  </MenuItem>
+                  <MenuItem className=" px-4 py-2 text-md text-gray-700 data-focus:bg-[#f7c9a0] data-focus:text-gray-900 data-focus:outline-hidden">
+                    <p>form 3</p>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </Menu> */}
+          </div>
           {/* <p className="text-red-800">* all fields are required.</p> */}
           <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-25 gap-y-8 items-center justify-center ">
             {/* <div className=" flex flex-col gap-6 "> */}
-              <div className=" flex flex-col gap-3">
-                <label>Branch</label>
-                <input
-                  name="branch"
-                  value={formData.branch}
-                  onChange={handleChange}
-                  type="text"
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3 text-[#1e1408] text-bold">
-                <label>Claim Number </label>
-                <input
-                  type="text"
-                  placeholder="Claims/270222/EN/002"
-                  name="claimnumber"
-                  value={formData.claimnumber}
-                  onChange={handleChange}
-                  className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731]"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label>Policy Class </label>
-                <input
-                  type="text"
-                  name="policyclass"
-                  value={formData.policyclass}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>{" "}
-              <div className=" flex flex-col gap-3">
-                <label>Policy Number</label>
-                <input
-                  type="text"
-                  name="policynumber"
-                  value={formData.policynumber}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>{" "}
-              <div className=" flex flex-col gap-3">
-                <label>Total Claims Paid</label>
-                <input
-                  type="text"
-                  name="totalclaimspaid"
-                  value={formData.totalclaimspaid}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Treaty Recovery</label>
-                <input
-                  type="text"
-                  name="treatyrecovery"
-                  value={formData.treatyrecovery}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
+            <div className=" flex flex-col gap-3">
+              <label>Branch</label>
+              <input
+                name="branch"
+                value={formData.branch}
+                onChange={handleChange}
+                type="text"
+                className="bg-gray-100 rounded-md outline-none px-2  border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3 text-[#1e1408] text-bold">
+              <label>Claim Number </label>
+              <input
+                type="text"
+                placeholder="Claims/270222/EN/002"
+                name="claimnumber"
+                value={formData.claimnumber}
+                onChange={handleChange}
+                className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731]"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label>Policy Class </label>
+              <input
+                type="text"
+                name="policyclass"
+                value={formData.policyclass}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>{" "}
+            <div className=" flex flex-col gap-3">
+              <label>Policy Number</label>
+              <input
+                type="text"
+                name="policynumber"
+                value={formData.policynumber}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>{" "}
+            <div className=" flex flex-col gap-3">
+              <label>Total Claims Paid</label>
+              <input
+                type="text"
+                name="totalclaimspaid"
+                value={formData.totalclaimspaid}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Treaty Recovery</label>
+              <input
+                type="text"
+                name="treatyrecovery"
+                value={formData.treatyrecovery}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
             {/* </div> */}
-
             {/* <div className="lg:w-70 flex flex-col gap-6 "> */}
-              <div className="flex flex-col gap-3">
-                <label>Co-insurer Recovery </label>
-                <input
-                  type="text"
-                  name="coinsurerrecovery"
-                  value={formData.coinsurerrecovery}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>FAC Recovery </label>
-                <input
-                  type="text"
-                  name="facrecovery"
-                  value={formData.facrecovery}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label>Salvage</label>
-                <input
-                  type="text"
-                  name="salvage"
-                  value={formData.salvage}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Total Recovery</label>
-                <input
-                  type="text"
-                  name="totalrecovery"
-                  value={formData.totalrecovery}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Insured</label>
-                <input
-                  type="date"
-                  name="insured"
-                  value={formData.insured}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Date of Loss</label>
-                <input
-                  type="date"
-                  name="dateofloss"
-                  value={formData.dateofloss}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              
+            <div className="flex flex-col gap-3">
+              <label>Co-insurer Recovery </label>
+              <input
+                type="text"
+                name="coinsurerrecovery"
+                value={formData.coinsurerrecovery}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>FAC Recovery </label>
+              <input
+                type="text"
+                name="facrecovery"
+                value={formData.facrecovery}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label>Salvage</label>
+              <input
+                type="text"
+                name="salvage"
+                value={formData.salvage}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Total Recovery</label>
+              <input
+                type="text"
+                name="totalrecovery"
+                value={formData.totalrecovery}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Insured</label>
+              <input
+                type="date"
+                name="insured"
+                value={formData.insured}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Date of Loss</label>
+              <input
+                type="date"
+                placeholder="select"
+                name="dateofloss"
+                value={formData.dateofloss}
+                onChange={handleChange}
+                className="bg-gray-100 placeholder-gray-50 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
             {/* </div> */}
             {/* <div className=" flex flex-col gap-5 mt-4"> */}
-              <div className=" flex flex-col gap-3 ">
-                <label>Agency</label>
-                <input
-                  type="text"
-                  name="agency"
-                  value={formData.agency}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Notification Date</label>
-                <input
-                  type="date"
-                  name="notificationdate"
-                  value={formData.notificationdate}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Reg Date</label>
-                <input
-                  type="date"
-                  name="regdate"
-                  value={formData.regdate}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Date Claim Paid</label>
-                <input
-                  type="date"
-                  name="dateclaimpaid"
-                  value={formData.dateclaimpaid}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px] w-80"
-                />
-              </div>
-
-              <div className=" flex flex-col gap-3">
-                <label>Risk type</label>
-                <input
-                  type="text"
-                  name="risktype"
-                  value={formData.risktype}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className=" flex flex-col gap-3">
-                <label>Description of loss</label>
-                <textarea
-                  type="text"
-                  name="descriptionofloss"
-                  value={formData.descriptionofloss}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 py-2 border border-2 border-[#8b6731] h-[80px] text-wrap"
-                />
-              </div>
+            <div className=" flex flex-col gap-3 ">
+              <label>Agency</label>
+              <input
+                type="text"
+                name="agency"
+                value={formData.agency}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Notification Date</label>
+              <input
+                type="date"
+                name="notificationdate"
+                value={formData.notificationdate}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Reg Date</label>
+              <input
+                type="date"
+                name="regdate"
+                value={formData.regdate}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Date Claim Paid</label>
+              <input
+                type="date"
+                name="dateclaimpaid"
+                value={formData.dateclaimpaid}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px] "
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Risk type</label>
+              <input
+                type="text"
+                name="risktype"
+                value={formData.risktype}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className=" flex flex-col gap-3">
+              <label>Description of loss</label>
+              <textarea
+                type="text"
+                name="descriptionofloss"
+                value={formData.descriptionofloss}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 py-2 border-2 border-[#8b6731] h-[80px] text-wrap"
+              />
+            </div>
             {/* </div> */}
           </div>
-          <div className="w-[100px] h-[30px] text-center text-stone-750  py-1 rounded-xl mt-9 mb-8 bg-stone-900 text-white font-semibold hover:text-[#f5a359] hover:bg-stone-800 duration-300">
+          <div className="w-[100px] h-[30px] text-center text-stone-750 mx-3 py-1 rounded-xl mt-9 mb-8 bg-stone-900 text-white font-semibold hover:text-[#f5a359] hover:bg-stone-800 duration-300">
             <ToastContainer
               position="top-center"
-              autoClose={3000}
+              autoClose={2000}
               hideProgressBar={false}
               newestOnTop={false}
               closeOnClick={true}

@@ -12,7 +12,9 @@ function Layout() {
           <img src={Nib} className="w-60 h-20" />
         </Link>
         <Link to="/login">
-          <CircleUser color="#7a3b04" size={50} />
+        <div className="w-28 h-8 border-2 border-[#7a3b04] hover:bg-stone-800 hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
+         <button ><p className="px-7 py-1">Logout</p></button> 
+         </div>
         </Link>
       </div>
 
@@ -25,8 +27,8 @@ function Layout() {
               onClick={() => setActivePath("/claimtable")}
               className={`text-center py-3 w-full md:w-[450px] h-[40px] rounded-t-lg md:rounded-l-lg md:rounded-tr-none ${
                 activePath === "/claimtable"
-                  ? "bg-stone-800 text-white"
-                  : "bg-stone-400 text-black hover:bg-stone-800 hover:text-white duration-500"
+                  ? "bg-stone-800 text-gray-100 font-semibold"
+                  : "bg-stone-300 text-stone-900 hover:bg-stone-800 hover:text-white duration-500 "
               }`}
             >
               Claims Data Table
@@ -36,8 +38,8 @@ function Layout() {
               onClick={() => setActivePath("/productiontable")}
               className={`text-center py-3 w-full md:w-[450px] h-[40px] rounded-b-lg md:rounded-r-lg md:rounded-bl-none ${
                 activePath === "/productiontable"
-                  ? "bg-stone-800 text-white"
-                  : "bg-stone-200 text-black hover:bg-stone-800 hover:text-white duration-500"
+                  ? "bg-stone-800 text-gray-100 font-semibold"
+                  : "bg-stone-200 text-stone-900 hover:bg-stone-800 hover:text-white duration-500"
               }`}
             >
               Production Data Table
@@ -57,7 +59,7 @@ function Layout() {
                   className={`${
                     activePath === "/"
                       ? "text-[#7a3b04] font-semibold underline decoration-4 underline-offset-8"
-                      : "text-black"
+                      : "text-stone-900"
                   }`}
                 >
                   Claims Data Form
@@ -76,7 +78,7 @@ function Layout() {
                   className={`${
                     activePath === "/production"
                       ? "text-[#7a3b04] font-semibold underline decoration-4 underline-offset-8 "
-                      : "text-black"
+                      : "text-stone-900"
                   }`}
                 >
                   Production Data Form
