@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { CircleUser, LockKeyhole, Mail } from "lucide-react";
+import { CircleUser, EyeOff, EyeIcon, LockKeyhole, Mail } from "lucide-react";
 import Nib from "../assets/images/NIBSlider.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../api/axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate(); 
+  const [showpass, setShowPass] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
+      const response = await api.post("/login", {
         email,
         password,
       });
@@ -31,10 +31,12 @@ function Login() {
       toast.success("Logged in successfully!", { autoClose: 2000 });
 
       setTimeout(() => {
-        navigate("/"); 
+        navigate("/");
+        
       }, 2000);
     } catch (err) {
-      const msg = err.response?.data?.message || "Login failed. Please try again.";
+      const msg =
+        err.response?.data?.message || "Login failed. Please try again.";
       setError(msg);
       toast.error(msg);
     } finally {
@@ -54,26 +56,20 @@ function Login() {
       />
 
       <div className="flex flex-col-2 items-center justify-between shadow-lg rounded-10 bg-stone-100">
-        <Link to="/">
+      
           <img src={Nib} className="w-70 h-20" />
-        </Link>
+       
         <Link to="/login">
           <CircleUser color="#0e0702ff" size={45} className="mx-20" />
         </Link>
       </div>
 
       <div className="items-center justify-center flex flex-col py-30">
-        <div className="bg-[#f5a359] sm:w-[400px] h-[150px] rounded-t-[40px] items-center justify-center flex flex-col text-stone-900">
+        <div className="bg-[#f5a359] sm:w-[400px] h-[170px] rounded-t-[40px] items-center justify-center flex flex-col text-stone-900 ">
           <p className="text-xl sm:text-2xl font-bold ">WELCOME BACK!</p>
-          <p className="w-72  sm:w-50 text-center sm:text-[17px] text-[15px]">Please login with your personal account.</p>
-          {/* <p className="text-sm text-stone-700">Don't have an account?</p> */}
-          {/* <div className="py-9">
-            <Link to="/signup">
-              <button className="bg-stone-900 hover:border hover:border-stone-800 hover:bg-[#f5a359] hover:border-2 w-45 rounded-xl h-8 duration-300">
-                <p className="text-white hover:text-stone-900 py-2"> Sign Up</p>
-              </button>
-            </Link>
-          </div> */}
+          <p className="w-72  sm:w-50 text-center sm:text-[17px] text-[15px]">
+            Please login with your personal account.
+          </p>
         </div>
 
         <div className="bg-stone-900 sm:w-[400px] h-[350px] items-center justify-center flex flex-col gap-8">
@@ -87,9 +83,10 @@ function Login() {
                   </span>
                   <input
                     type="email"
-                    className="bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
                     required
                   />
                 </div>
@@ -99,24 +96,41 @@ function Login() {
                     <LockKeyhole className="text-gray-800 w-4 h-4" />
                   </span>
                   <input
-                    type="password"
-                    className="bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
+                    type={showpass ? "text" : "password"}
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
                     required
                   />
+                  <span
+                    onClick={() => setShowPass(!showpass)}
+                    className="absolute inset-y-0 left-60 sm:left-52 flex items-center cursor-pointer"
+                  >
+                    {showpass ? (
+                      <EyeIcon className="text-gray-600 w-4 h-4" />
+                    ) : (
+                      <EyeOff className="text-gray-600 w-4 h-4" />
+                    )}
+                  </span>
                 </div>
               </div>
 
               <div className="border-2 border-[#f5a359] w-[150px] h-[30px] rounded-2xl hover:bg-[#f5a359] duration-300 mt-8 mx-auto">
                 <button type="submit" className="w-full h-full">
-                  <p className="text-white hover:text-stone-900 py-1 text-md duration-300">
+                  <p className="text-white hover:text-stone-900 py-1 text-md duration-300 font-semibold">
                     Log in
                   </p>
                 </button>
               </div>
-
-              {/* {error && <p className="text-red-400 mt-4">{error}</p>} */}
+              <div className="flex gap-2 py-4">
+                <p className="text-sm text-stone-300">Don't have an account?</p>
+                <Link to="/signup">
+                  <p className="text-sm text-stone-100 hover:text-[#f5a359] underline">
+                    Sign Up
+                  </p>
+                </Link>
+              </div>
             </div>
           </form>
         </div>

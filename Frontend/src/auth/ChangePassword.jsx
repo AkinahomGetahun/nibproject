@@ -1,45 +1,59 @@
 import { useState } from "react";
-import { CircleUser, LockKeyhole } from "lucide-react";
+import {
+  CircleUser,
+  EyeOff,
+  EyeIcon,
+  KeySquare,
+  LockKeyhole,
+} from "lucide-react";
 import Nib from "../assets/images/NIBSlider.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import api from "../api/axios";
 function ChangePassword() {
-  const [password, setPassword] = useState("");
+  const [temporarypassword, setTemporaryPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+  const [showtemppass, setShowTempPass] = useState(false);
+  const [shownewpass, setShowNewPass] = useState(false);
+  const [showconfirmpass, setShowConfirmPass] = useState(false);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError("");
+  // const handlePassword ()=>{
 
-//     try {
-//       const response = await axios.post("http://localhost:8000/api/login", {
-//         email,
-//         password,
-//       });
+  //  }
+  //   const handleLogin = async (e) => {
+  //     e.preventDefault();
+  //     setLoading(true);
+  //     setError("");
 
-//       const { access_token, user } = response.data;
-//       localStorage.setItem("token", access_token);
+  //     try {
+  //       const response = await axios.post("http://localhost:8000/api/login", {
+  //         email,
+  //         password,
+  //       });
 
-//       toast.success("Logged in successfully!", { autoClose: 2000 });
+  //       const { access_token, user } = response.data;
+  //       localStorage.setItem("token", access_token);
 
-//       setTimeout(() => {
-//         navigate("/"); 
-//       }, 2000);
-//     } catch (err) {
-//       const msg = err.response?.data?.message || "Login failed. Please try again.";
-//       setError(msg);
-//       toast.error(msg);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  //       toast.success("Logged in successfully!", { autoClose: 2000 });
+
+  //       setTimeout(() => {
+  //         navigate("/");
+  //       }, 2000);
+  //     } catch (err) {
+  //       const msg = err.response?.data?.message || "Login failed. Please try again.";
+  //       setError(msg);
+  //       toast.error(msg);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
   return (
     <div>
@@ -62,25 +76,34 @@ function ChangePassword() {
       </div>
 
       <div className="items-center justify-center flex flex-col py-30">
-        
-
         <div className="bg-stone-900 sm:w-[400px] h-[350px] items-center justify-center flex flex-col gap-8">
           <p className="text-white text-2xl font-bold">Change Password</p>
           <form>
             <div>
               <div className="flex flex-col gap-5">
-               <div className="relative sm:px-0 px-4">
+                {/* <EyeOff color="white"/>  */}
+                <div className="relative sm:px-0 px-4 justify-between">
                   <span className="absolute inset-y-0 left-6 sm:left-2 flex items-center">
-                    {/* <LockKeyhole className="text-gray-800 w-4 h-4" /> */}
+                    <KeySquare className="text-gray-800 w-4 h-4" />
                   </span>
                   <input
-                    type="password"
-                    className="bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={showtemppass ? "text" : "password"}
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
+                    value={temporarypassword}
+                    onChange={(e) => setTemporaryPassword(e.target.value)}
                     placeholder="Temporary password"
                     required
                   />
+                  <span
+                    onClick={() => setShowTempPass(!showtemppass)}
+                    className="absolute inset-y-0 left-60 sm:left-52 flex items-center cursor-pointer"
+                  >
+                    {showtemppass ? (
+                      <EyeIcon className="text-gray-600 w-4 h-4" />
+                    ) : (
+                      <EyeOff className="text-gray-600 w-4 h-4" />
+                    )}
+                  </span>
                 </div>
 
                 <div className="relative sm:px-0 px-4">
@@ -88,26 +111,46 @@ function ChangePassword() {
                     <LockKeyhole className="text-gray-800 w-4 h-4" />
                   </span>
                   <input
-                    type="password"
-                    className="bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="new password"
+                    type={shownewpass ? "text" : "password"}
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8.5 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
+                    value={newpassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="New password"
                     required
                   />
+                  <span
+                    onClick={() => setShowNewPass(!shownewpass)}
+                    className="absolute inset-y-0 left-60 sm:left-52 flex items-center cursor-pointer"
+                  >
+                    {shownewpass ? (
+                      <EyeIcon className="text-gray-600 w-4 h-4" />
+                    ) : (
+                      <EyeOff className="text-gray-600 w-4 h-4" />
+                    )}
+                  </span>
                 </div>
-                 <div className="relative sm:px-0 px-4">
+                <div className="relative sm:px-0 px-4">
                   <span className="absolute inset-y-0 left-6 sm:left-2 flex items-center">
                     <LockKeyhole className="text-gray-800 w-4 h-4" />
                   </span>
                   <input
-                    type="password"
-                    className="bg-stone-200 rounded-lg h-7 sm:w-60 px-8 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="confirm password"
+                    type={showconfirmpass ? "text" : "password"}
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8.5 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
+                    value={confirmpassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm password"
                     required
                   />
+                  <span
+                    onClick={() => setShowConfirmPass(!showconfirmpass)}
+                    className="absolute inset-y-0 left-60 sm:left-52 flex items-center cursor-pointer"
+                  >
+                    {showconfirmpass ? (
+                      <EyeIcon className="text-gray-600 w-4 h-4" />
+                    ) : (
+                      <EyeOff className="text-gray-600 w-4 h-4" />
+                    )}
+                  </span>
                 </div>
               </div>
 

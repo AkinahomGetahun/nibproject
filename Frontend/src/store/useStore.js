@@ -2,6 +2,7 @@ import React from "react";
 import { create } from "zustand";
 import api from "../api/axios";
 const useStore = create((set,get) => ({
+  
   claims: [],
   fetchClaims: async () => {
     try {

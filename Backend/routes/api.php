@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
@@ -13,6 +14,7 @@ Route::get('/test', function () {
 Route::post('/signup', [SignupController::class, 'signup']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+// Route::post('/changepassword', [L::class, 'changepassword']);
 
 //claims
 Route::post('/create-claims-data', [ClaimsController::class, 'createclaimsdata']);
@@ -27,6 +29,19 @@ Route::post('/get-production-data', [ProductionController::class, 'getproduction
 Route::post('/edit-production-data', [ProductionController::class, 'editproductiondata']);
 Route::post('/production-by-id/{id}', [ProductionController::class, 'productionbyid']);
 Route::post('/delete-production-data/{id}', [ProductionController::class, 'deleteproductiondata']);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Route::get('/db-test', function () {
