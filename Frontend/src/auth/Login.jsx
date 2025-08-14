@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../api/axios";
-import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,25 +20,24 @@ function Login() {
     setError("");
 
     try {
-     
-  const response = await api.post(
-    "/login",
-    {
-      email,
-      password,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-    'Accept': 'application/json'
-      },
-    }
-  );
+      const response = await api.post(
+        "/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
       const { access_token, user } = response.data;
       localStorage.setItem("token", access_token);
 
-      toast.success("Logged in successfully!", { autoClose: 2000 });
+      toast.success("Logged in successfully!", { autoClose: 1500 });
 
       setTimeout(() => {
         navigate("/");

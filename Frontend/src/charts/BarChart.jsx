@@ -82,7 +82,7 @@ const BarChart = () => {
   }, [claims]);
 
   return (
-    <div className="flex flex-col items-center justify-center py-8">
+    <div className="flex flex-col items-center justify-center py-8 ">
       <ReactApexChart
         options={state.options}
         series={state.series}

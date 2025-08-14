@@ -1,16 +1,47 @@
 import { CircleUser } from "lucide-react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import Nib from "./assets/images/NIBSlider.png";
 import useStore from "./store/useStore";
 import api from "./api/axios";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 function Layout() {
   const { activePath, setActivePath } = useStore();
-  const handleLogout = async () => {
-    const res = await api.post("/logout");
+    const [error, setError] = useState("");
+  
+  const navigate = useNavigate();
 
-    localStorage.removeItem("token");
-   };
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    setError("");
+    const token = localStorage.getItem("token");
+    toast.success("Logged out !", { autoClose: 1500 });
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
+    try {
+      await api.post(
+        "/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.removeItem("token");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      const msg =
+        error.response?.data?.message || "Login failed. Please try again.";
+      setError(msg);
+      toast.error(msg);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-stone-100">
       <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0">
@@ -19,9 +50,11 @@ function Layout() {
         </Link>
         {/* <Link to="/logout"> */}
         <div className="flex flex-col items-center ">
-         <div><p className="">Hello! </p></div> 
-         
-          <div className="h-6 hover:border-2  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
+          <div>
+            <p className="">Hello! </p>
+          </div>
+
+          <div className="h-7 border-stone-800 border-4 hover:border-4  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-stone-700 rounded-xl transition duration-700">
             <button onClick={handleLogout}>
               <p className="px-3">Logout</p>
             </button>

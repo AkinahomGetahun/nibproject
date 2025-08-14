@@ -46,18 +46,10 @@ class LoginController extends Controller
     // ]);
 
 
+public function logout(Request $request)
+{
+    $request->user()->currentAccessToken()->delete();
+    return response()->json(['message' => 'Logged out']);
+}
 
-    public function logout(Request $request)
-    {
-        try {
-            Auth::logout();
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return response()->json(['message' => 'Logged out successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
 }
