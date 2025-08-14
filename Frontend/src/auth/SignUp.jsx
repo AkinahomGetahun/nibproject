@@ -34,7 +34,7 @@ function SignUp() {
     e.preventDefault();
     setError("");
 
-    console.log("Signup form data:", form);
+    // console.log("Signup form data:", form);
 
     try {
       const res = await api.post("/signup", form);

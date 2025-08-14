@@ -64,8 +64,8 @@ const useStore = create((set,get) => ({
   },
 
   
-  activePath: "/", // could be "/", "/production", "/claimtable", or "/productiontable"
-  setActivePath: (path) => set({ activePath: path }),activeForm: "/",
+  activePath: "/claim", 
+  setActivePath: (path) => set({ activePath: path }),activeForm: "/claim",
 
   
 }));

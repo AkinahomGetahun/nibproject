@@ -13,23 +13,23 @@ class SignupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8||confirmed',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'must_change_password' => false,
+            'must_change_password' => true,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Registration successful',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
+            // 'access_token' => $token,
+            // 'token_type' => 'Bearer',
+            // 'user' => $user,
         ]);
     }
 }

@@ -11,11 +11,13 @@ import ProductionDataEdit from "./EditData/ProductionDataEdit";
 import ClaimDataEdit from "./EditData/ClaimDataEdit";
 import ChangePassword from "./auth/ChangePassword";
 
+import LandingPageCharts from "./charts/LandingPageCharts";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Claim />} />
+      <Route element={<Layout />}>
+        <Route index element={<LandingPageCharts />} />
+        <Route path="claim" element={<Claim />} />
         <Route path="production" element={<Production />} />
         <Route path="claimtable" element={<ClaimTable />} />
         <Route path="productiontable" element={<ProductionTable />} />

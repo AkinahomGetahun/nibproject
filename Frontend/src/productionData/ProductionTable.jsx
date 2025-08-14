@@ -171,7 +171,7 @@ function ProductionTable() {
   }, [fetchProduction]);
 
   useEffect(() => {
-    console.log("production:", production);
+    // console.log("production:", production);
   }, [production]);
   const columns = [
     {

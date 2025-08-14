@@ -50,7 +50,7 @@ function ClaimTable() {
   }, [fetchClaims]);
 
   useEffect(() => {
-    console.log("claims:", claims);
+    // console.log("claims:", claims);
   }, [claims]);
   //  const componentRef = useRef();
   //  const handlePrint = useReactToPrint({

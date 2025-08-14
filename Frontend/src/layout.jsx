@@ -2,20 +2,33 @@ import { CircleUser } from "lucide-react";
 import { Outlet, Link } from "react-router-dom";
 import Nib from "./assets/images/NIBSlider.png";
 import useStore from "./store/useStore";
+import api from "./api/axios";
+
 function Layout() {
   const { activePath, setActivePath } = useStore();
+  const handleLogout = async () => {
+    const res = await api.post("/logout");
 
+    localStorage.removeItem("token");
+    window.location.href = "/login"; // Redirect to login page
+  };
   return (
     <div className="min-h-screen bg-stone-100">
       <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0">
         <Link to="/">
           <img src={Nib} className="w-60 h-20" />
         </Link>
-        <Link to="/login">
-        <div className="w-28 h-8 border-2 border-[#7a3b04] hover:bg-stone-800 hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
-         <button ><p className="px-7 py-1">Logout</p></button> 
-         </div>
-        </Link>
+        {/* <Link to="/logout"> */}
+        <div className="flex flex-col items-center ">
+         <div><p className="">Hello! </p></div> 
+         
+          <div className="w-20 hover:bg-stone-800 hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
+            <button onClick={handleLogout}>
+              <p className="px-3 ">Logout</p>
+            </button>
+          </div>
+        </div>
+        {/* </Link> */}
       </div>
 
       <div className="flex flex-col md:items-center md:justify-center py-8 px-4">
@@ -50,7 +63,7 @@ function Layout() {
         {/* Form Links */}
         <div className="w-full md:w-[700px] lg:w-[900px] mt-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-            <Link to="/">
+            <Link to="/claim">
               <div
                 onClick={() => setActivePath("/")}
                 className="flex items-center gap-2 cursor-pointer text-[17px]"

@@ -94,7 +94,7 @@ function ProductionDataEdit() {
                   name="branchcode"
                   value={formData.branchcode}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -104,7 +104,7 @@ function ProductionDataEdit() {
                   name="processingdate"
                   value={formData.processingdate}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3 ">
@@ -115,7 +115,7 @@ function ProductionDataEdit() {
                   value={formData.policynumber}
                   onChange={handleChange}
                   placeholder="Claims/270222/EN/002"
-                  className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border border-2 border-yellow-700"
+                  className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border-2 border-yellow-700"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -125,7 +125,7 @@ function ProductionDataEdit() {
                   name="clientname"
                   value={formData.clientname}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -135,7 +135,7 @@ function ProductionDataEdit() {
                   name="agentname"
                   value={formData.agentname}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -145,7 +145,7 @@ function ProductionDataEdit() {
                   name="effectivedate"
                   value={formData.effectivedate}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
             </div>
@@ -158,7 +158,7 @@ function ProductionDataEdit() {
                   name="enddate"
                   value={formData.enddate}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -168,7 +168,7 @@ function ProductionDataEdit() {
                   name="suminsured"
                   value={formData.suminsured}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -178,7 +178,7 @@ function ProductionDataEdit() {
                   name="totpremium"
                   value={formData.totpremium}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -188,7 +188,7 @@ function ProductionDataEdit() {
                   name="totcommission"
                   value={formData.totcommission}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -198,7 +198,7 @@ function ProductionDataEdit() {
                   name="netpremium"
                   value={formData.netpremium}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -208,7 +208,7 @@ function ProductionDataEdit() {
                   name="totvat"
                   value={formData.totvat}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
             </div>
@@ -220,7 +220,7 @@ function ProductionDataEdit() {
                   name="salesperson"
                   value={formData.salesperson}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -230,7 +230,7 @@ function ProductionDataEdit() {
                   name="naicom"
                   value={formData.naicom}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -240,7 +240,7 @@ function ProductionDataEdit() {
                   name="transactiontype"
                   value={formData.transactiontype}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -250,7 +250,7 @@ function ProductionDataEdit() {
                   name="channel"
                   value={formData.channel}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -260,7 +260,7 @@ function ProductionDataEdit() {
                   name="policytype"
                   value={formData.policytype}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3 ">
@@ -270,7 +270,7 @@ function ProductionDataEdit() {
                   name="currency"
                   value={formData.currency}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
             </div>

@@ -19,7 +19,7 @@ class LoginController extends Controller
 
         $user = Auth::user();
 
-        $token = $user-> createToken ('auth_token')->plainTextToken;
+        $token = $user-> createToken('bearer_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
@@ -29,12 +29,12 @@ class LoginController extends Controller
         ]);
 
 
-        $request->session()->regenerate();
+        // $request->session()->regenerate();
 
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => Auth::user(),
-        ]);
+        // return response()->json([
+        //     'message' => 'Login successful',
+        //     'user' => Auth::user(),
+        // ]);
     }
 
     public function logout(Request $request)

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../api/axios";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -20,6 +21,8 @@ function Login() {
     setError("");
 
     try {
+      // axios.get("/sanctum/csrf-cookie", { withCredentials: true });
+
       const response = await api.post("/login", {
         email,
         password,
@@ -32,7 +35,6 @@ function Login() {
 
       setTimeout(() => {
         navigate("/");
-        
       }, 2000);
     } catch (err) {
       const msg =
@@ -56,9 +58,8 @@ function Login() {
       />
 
       <div className="flex flex-col-2 items-center justify-between shadow-lg rounded-10 bg-stone-100">
-      
-          <img src={Nib} className="w-70 h-20" />
-       
+        <img src={Nib} className="w-70 h-20" />
+
         <Link to="/login">
           <CircleUser color="#0e0702ff" size={45} className="mx-20" />
         </Link>
