@@ -6,7 +6,6 @@ import ProductionTable from "./productionData/ProductionTable";
 import ClaimTable from "./claimData/ClaimTable";
 import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
-import NavBar from "./NavBar";
 import ProductionDataEdit from "./EditData/ProductionDataEdit";
 import ClaimDataEdit from "./EditData/ClaimDataEdit";
 import ChangePassword from "./auth/ChangePassword";

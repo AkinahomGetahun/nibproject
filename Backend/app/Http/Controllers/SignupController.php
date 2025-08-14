@@ -27,9 +27,9 @@ class SignupController extends Controller
 
         return response()->json([
             'message' => 'Registration successful',
-            // 'access_token' => $token,
-            // 'token_type' => 'Bearer',
-            // 'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
         ]);
     }
 }

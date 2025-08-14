@@ -6,7 +6,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ClaimsController;
 use App\Http\Controllers\ProductionController;
-use Illuminate\Session\Middleware\StartSession;
+
+use Illuminate\Http\Request;
 
 Route::get('/test', function () {
     return 'API works';
@@ -15,24 +16,26 @@ Route::get('/test', function () {
 Route::post('/signup', [SignupController::class, 'signup']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [LoginController::class, 'logout']);
-
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 Route::post('/changepassword', [LoginController::class, 'changepassword']);
 // Route::middleware(['auth:sanctum'])->group(
 //     function () {
 
-        //claims
-        Route::post('/create-claims-data', [ClaimsController::class, 'createclaimsdata'])->middleware('auth:sanctum');
-        Route::post('/get-claims-data', [ClaimsController::class, 'getclaimsdata']);
-        Route::post('/edit-claims-data', [ClaimsController::class, 'editclaimsdata']);
-        Route::post('/claims-by-id/{id}', [ClaimsController::class, 'claimsbyid']);
-        Route::post('/delete-claims-data/{id}', [ClaimsController::class, 'deleteclaimsdata']);
+//claims
+Route::post('/create-claims-data', [ClaimsController::class, 'createclaimsdata'])->middleware('auth:sanctum');
+Route::post('/get-claims-data', [ClaimsController::class, 'getclaimsdata']);
+Route::post('/edit-claims-data', [ClaimsController::class, 'editclaimsdata']);
+Route::post('/claims-by-id/{id}', [ClaimsController::class, 'claimsbyid']);
+Route::post('/delete-claims-data/{id}', [ClaimsController::class, 'deleteclaimsdata']);
 
-        //production
-        Route::post('/create-production-data', [ProductionController::class, 'createproductiondata']);
-        Route::post('/get-production-data', [ProductionController::class, 'getproductiondata']);
-        Route::post('/edit-production-data', [ProductionController::class, 'editproductiondata']);
-        Route::post('/production-by-id/{id}', [ProductionController::class, 'productionbyid']);
-        Route::post('/delete-production-data/{id}', [ProductionController::class, 'deleteproductiondata']);
+//production
+Route::post('/create-production-data', [ProductionController::class, 'createproductiondata']);
+Route::post('/get-production-data', [ProductionController::class, 'getproductiondata']);
+Route::post('/edit-production-data', [ProductionController::class, 'editproductiondata']);
+Route::post('/production-by-id/{id}', [ProductionController::class, 'productionbyid']);
+Route::post('/delete-production-data/{id}', [ProductionController::class, 'deleteproductiondata']);
     // }
 
 

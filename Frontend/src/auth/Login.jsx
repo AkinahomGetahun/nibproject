@@ -21,12 +21,20 @@ function Login() {
     setError("");
 
     try {
-      // axios.get("/sanctum/csrf-cookie", { withCredentials: true });
-
-      const response = await api.post("/login", {
-        email,
-        password,
-      });
+     
+  const response = await api.post(
+    "/login",
+    {
+      email,
+      password,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+    'Accept': 'application/json'
+      },
+    }
+  );
 
       const { access_token, user } = response.data;
       localStorage.setItem("token", access_token);

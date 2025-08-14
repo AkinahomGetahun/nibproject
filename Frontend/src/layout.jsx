@@ -10,8 +10,7 @@ function Layout() {
     const res = await api.post("/logout");
 
     localStorage.removeItem("token");
-    window.location.href = "/login"; // Redirect to login page
-  };
+   };
   return (
     <div className="min-h-screen bg-stone-100">
       <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0">
@@ -22,9 +21,9 @@ function Layout() {
         <div className="flex flex-col items-center ">
          <div><p className="">Hello! </p></div> 
          
-          <div className="w-20 hover:bg-stone-800 hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
+          <div className="h-6 hover:border-2  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-[#f5a359] rounded-xl duration-300">
             <button onClick={handleLogout}>
-              <p className="px-3 ">Logout</p>
+              <p className="px-3">Logout</p>
             </button>
           </div>
         </div>
