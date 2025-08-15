@@ -18,6 +18,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    const token = localStorage.getItem("token");
 
     try {
       const response = await api.post(
@@ -30,25 +31,25 @@ function Login() {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       const { access_token, user } = response.data;
       localStorage.setItem("token", access_token);
-
-      toast.success("Logged in successfully!", { autoClose: 1500 });
-
+      toast.success("Logging in!", { autoClose: 1500 });
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 1600);
     } catch (err) {
       const msg =
         err.response?.data?.message || "Login failed. Please try again.";
       setError(msg);
+      console.error("Login error:", err);
       toast.error(msg);
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   };
 

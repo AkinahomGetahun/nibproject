@@ -4,7 +4,6 @@ import useStore from "../store/useStore";
 
 const BarChart = () => {
   const { claims, fetchClaims } = useStore();
-
   const [state, setState] = useState({
     series: [{ data: [] }],
     options: {
@@ -91,7 +90,7 @@ const BarChart = () => {
         height={350}
         className="bg-[#fff5eb] shadow-md hover:shadow-lg rounded-lg p-4"
       />
-      <p className="text-stone-700 py-4"> Claims Data Total</p>
+      <p className="text-stone-600 py-3 text-sm"> Claims Data Total</p>
     </div>
   );
 };

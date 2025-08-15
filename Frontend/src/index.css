@@ -75,6 +75,9 @@ xl	80rem (1280px) */
   border-bottom: 2px solid #007bff;
 }
 
+.custom-select:hover{
+  background: #000;
+}
 /* .Toastify__toast--success {
   background-color: #f5a359 !important;
   color: white;

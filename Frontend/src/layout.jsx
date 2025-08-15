@@ -1,4 +1,4 @@
-import { CircleUser } from "lucide-react";
+import { ChevronDown, CircleUser } from "lucide-react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import Nib from "./assets/images/NIBSlider.png";
 import useStore from "./store/useStore";
@@ -6,19 +6,19 @@ import api from "./api/axios";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { useEffect } from "react";
 function Layout() {
   const { activePath, setActivePath } = useStore();
-    const [error, setError] = useState("");
-  
+  const [error, setError] = useState("");
+  // const name = useStore((state) => state.user?.name); 
+  // const fetchUser = useStore((state) => state.fetchUser);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
     e.preventDefault();
     setError("");
     const token = localStorage.getItem("token");
-    toast.success("Logged out !", { autoClose: 1500 });
-
     setTimeout(() => {
       navigate("/login");
     }, 2000);
@@ -32,7 +32,11 @@ function Layout() {
           },
         }
       );
+     
+
       localStorage.removeItem("token");
+      toast.success("Logged out !", { autoClose: 1500 });
+      // navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
       const msg =
@@ -41,6 +45,9 @@ function Layout() {
       toast.error(msg);
     }
   };
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [fetchUser]);
 
   return (
     <div className="min-h-screen bg-stone-100">
@@ -49,16 +56,42 @@ function Layout() {
           <img src={Nib} className="w-60 h-20" />
         </Link>
         {/* <Link to="/logout"> */}
-        <div className="flex flex-col items-center ">
-          <div>
-            <p className="">Hello! </p>
-          </div>
+        <div className="flex  items-center ">
+          {/* <CircleUser color="#361d07" size={40} /> */}
+          {/* <div className="flex gap-2 text-lg mt-5 mx-2">
+            Hello,
+            {name ? (
+              <p className="text-[#8b6731] font-bold"> {name}!</p>
+            ) : (
+              <p>...</p>
+            )}
+          </div> */}
+          <Menu as="div" className="relative inline-block">
+            <MenuButton className="inline-flex  rounded-md  px-3  shadow-xs outline-none ">
+              <ChevronDown
+                size={30}
+                className="-mr-1 mt-2 text-gray-800 hover:text-[#f6b06f] font-bold"
+              />
+            </MenuButton>
+            <MenuItems
+              transition
+              className="absolute right-0 z-10 w-26 h-12 font-bold bg-[#f7c9a0] text-stone-900 origin-top-right rounded-b-md  shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+            >
+              <div className="py-1">
+                <button onClick={handleLogout}>
+                  <MenuItem className=" px-4 py-2 text-md text-gray-700 data-focus:text-gray-900 data-focus:outline-hidden">
+                    <p className="px-3">Logout</p>
+                  </MenuItem>
+                </button>
+              </div>
+            </MenuItems>
+          </Menu>
 
-          <div className="h-7 border-stone-800 border-4 hover:border-4  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-stone-700 rounded-xl transition duration-700">
+          {/* <div className="h-7 border-stone-800 border-4 hover:border-4  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-stone-700 rounded-xl transition duration-700">
             <button onClick={handleLogout}>
               <p className="px-3">Logout</p>
             </button>
-          </div>
+          </div> */}
         </div>
         {/* </Link> */}
       </div>

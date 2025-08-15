@@ -1,6 +1,7 @@
 import React from "react";
 import { create } from "zustand";
 import api from "../api/axios";
+import { User } from "lucide-react";
 const useStore = create((set,get) => ({
   
   claims: [],
@@ -62,7 +63,17 @@ const useStore = create((set,get) => ({
       throw err; 
     }
   },
+// user: null,
+//   fetchUser: async () => {
+//     try {
+//       const response = await api.get("/user");
+//       const data = response.data;
 
+//       set({ user: data.user || null }); 
+//     } catch (error) {
+//       console.error('Error fetching user:', error);
+//     }
+//   },
   
   activePath: "/claim", 
   setActivePath: (path) => set({ activePath: path }),activeForm: "/claim",

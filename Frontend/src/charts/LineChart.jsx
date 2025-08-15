@@ -88,7 +88,7 @@ const BarChart = () => {
         height={350}
         className="bg-stone-200 shadow-md hover:shadow-lg rounded-lg  p-4"
       />
-      <p className="text-stone-700 py-4"> Production Data Total</p>
+      <p className="text-stone-600 py-3 text-sm"> Production Data Total</p>
     </div>
   );
 };

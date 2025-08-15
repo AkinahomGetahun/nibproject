@@ -11,12 +11,14 @@ class SignupController extends Controller
     public function signup(Request $request)
     {
         $validated = $request->validate([
+            'role' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8||confirmed',
         ]);
 
         $user = User::create([
+            'role' => $validated['role'],
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),

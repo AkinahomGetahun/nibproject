@@ -12,11 +12,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nib from "../assets/images/NIBSlider.png";
 import api from "../api/axios";
-
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronDown } from "lucide-react";
 function SignUp() {
   const [showpass, setShowPass] = useState(false);
   const [showconfirmpass, setShowConfirmPass] = useState(false);
   const [form, setForm] = useState({
+    role: "",
     name: "",
     email: "",
     password: "",
@@ -41,6 +43,7 @@ function SignUp() {
       localStorage.setItem("token", res.data.access_token);
       toast.success("Registration successful!");
       setForm({
+        role: "",
         name: "",
         email: "",
         password: "",
@@ -59,9 +62,8 @@ function SignUp() {
       <ToastContainer position="top-center" autoClose={5000} />
       <div className="">
         <div className="flex flex-col-2 items-center justify-between shadow-lg rounded-10 bg-stone-100">
-         
-            <img src={Nib} className="w-70 h-20" alt="Logo" />
-          
+          <img src={Nib} className="w-70 h-20" alt="Logo" />
+
           <Link to="/signup">
             <CircleUser color="#0e0702ff" size={45} className="mx-20" />
           </Link>
@@ -85,6 +87,18 @@ function SignUp() {
             </p>
             <form onSubmit={handleSignup}>
               <div className="flex flex-col gap-5 w-[230px]">
+                <select
+                  value={form.role}
+                  name="role"
+                  onChange={handleChange}
+                  className=" placeholder-gray-200 border border-gray-300 text-gray-300 text-sm rounded-lg block w-full h-8 outline-none bg-stone-200 hover:border-gray-500"
+                >
+                  <option value="" selected disabled>Role</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Production">Production</option>
+                  <option value="Claim">Claim</option>
+                </select>
+
                 <div className="relative">
                   <span className="absolute inset-y-0 left-2 flex items-center">
                     <UserRound className="text-gray-800 w-4 h-4" />
