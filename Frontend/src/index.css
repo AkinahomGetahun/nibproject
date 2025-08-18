@@ -75,8 +75,9 @@ xl	80rem (1280px) */
   border-bottom: 2px solid #007bff;
 }
 
-.custom-select:hover{
-  background: #000;
+select.custom-select option:hover {
+  box-shadow: 0 0 10px 100px #0d2630 inset; /* Adjust color and spread as needed */
+  color: white; /* Change text color for better contrast */
 }
 /* .Toastify__toast--success {
   background-color: #f5a359 !important;

@@ -17,25 +17,26 @@ Route::post('/signup', [SignupController::class, 'signup']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/user', [LoginController::class, 'user']);
-
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return response()->json(['user' => $request->user()]);
+});
 // Route::post('/changepassword', [LoginController::class, 'changepassword']);
 // Route::middleware(['auth:sanctum'])->group(
 //     function () {
 
 //claims
-Route::post('/create-claims-data', [ClaimsController::class, 'createclaimsdata']);
-Route::post('/get-claims-data', [ClaimsController::class, 'getclaimsdata']);
-Route::post('/edit-claims-data', [ClaimsController::class, 'editclaimsdata']);
-Route::post('/claims-by-id/{id}', [ClaimsController::class, 'claimsbyid']);
-Route::post('/delete-claims-data/{id}', [ClaimsController::class, 'deleteclaimsdata']);
+Route::post('/create-claims-data', [ClaimsController::class, 'createclaimsdata'])->middleware('auth:sanctum');
+Route::post('/get-claims-data', [ClaimsController::class, 'getclaimsdata'])->middleware('auth:sanctum');
+Route::post('/edit-claims-data', [ClaimsController::class, 'editclaimsdata'])->middleware('auth:sanctum');
+Route::post('/claims-by-id/{id}', [ClaimsController::class, 'claimsbyid'])->middleware('auth:sanctum');
+Route::post('/delete-claims-data/{id}', [ClaimsController::class, 'deleteclaimsdata'])->middleware('auth:sanctum');
 
 //production
-Route::post('/create-production-data', [ProductionController::class, 'createproductiondata']);
-Route::post('/get-production-data', [ProductionController::class, 'getproductiondata']);
-Route::post('/edit-production-data', [ProductionController::class, 'editproductiondata']);
-Route::post('/production-by-id/{id}', [ProductionController::class, 'productionbyid']);
-Route::post('/delete-production-data/{id}', [ProductionController::class, 'deleteproductiondata']);
+Route::post('/create-production-data', [ProductionController::class, 'createproductiondata'])->middleware('auth:sanctum');
+Route::post('/get-production-data', [ProductionController::class, 'getproductiondata'])->middleware('auth:sanctum');
+Route::post('/edit-production-data', [ProductionController::class, 'editproductiondata'])->middleware('auth:sanctum');
+Route::post('/production-by-id/{id}', [ProductionController::class, 'productionbyid'])->middleware('auth:sanctum');
+Route::post('/delete-production-data/{id}', [ProductionController::class, 'deleteproductiondata'])->middleware('auth:sanctum');
     // }
 // ->middleware('auth:sanctum')
 

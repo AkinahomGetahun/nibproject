@@ -100,26 +100,43 @@ function ProductionTable() {
       .toLowerCase()
       .includes(filterText.toLowerCase())
   );
+  // const netpremium = filteredData.reduce(
+  //   (difference, row) =>
+  //     difference + (parseFloat(row.totpremium) || 0) - (parseFloat(row.totcommission) || 0), 0
+
+  // )
+
   const suminsured = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.suminsured) || 0),
     0
   );
 
-  const totpremium = filteredData.reduce(
-    (sum, row) => sum + (parseFloat(row.totpremium) || 0),
+  const premiumamount = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.premiumamount) || 0),
     0
   );
-  const totcommission = filteredData.reduce(
-    (sum, row) => sum + (parseFloat(row.totcommission) || 0),
+  const commissionamount = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.commissionamount) || 0),
     0
   );
 
-  const netpremium = filteredData.reduce(
-    (sum, row) => sum + (parseFloat(row.netpremium) || 0),
-    0
-  );
-  const totvat = filteredData.reduce(
-    (sum, row) => sum + (parseFloat(row.totvat) || 0),
+ const netpremium = filteredData.reduce(
+  (sum, row) => {
+    const premium = parseFloat(row.premium) || 0;
+    const commission = parseFloat(row.commission) || 0;
+    const net = premium - commission;
+    return sum + net;
+  },
+  0
+);
+
+// total
+  // const netpremium = filteredData.reduce(
+  //   (sum, row) => sum + (parseFloat(row.netpremium) || 0),
+  //   0
+  // );
+  const retainedpremium = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.retainedpremium) || 0),
     0
   );
   const dataWithTotal = [
@@ -127,23 +144,22 @@ function ProductionTable() {
     {
       id: "totalrow",
       branchcode: "Total",
-      processingdate: "-",
       policynumber: "-",
-      clientname: "-",
+      nameofinsured: "-",
       agentname: "-",
-      effectivedate:"-",
+      effectivedate: "-",
       enddate: "-",
       suminsured: suminsured,
-      totpremium: totpremium,
-      totcommission: totcommission,
+      premiumamount: premiumamount,
+      commissionamount: commissionamount,
       netpremium: netpremium,
-      totvat: totvat,
+      retainedpremium: retainedpremium,
       salesperson: "-",
       naicom: "-",
       transactiontype: "-",
       channel: "-",
-      policytype: "-",
-      currency: "-",
+      // policytype: "-",
+      // currency: "-",
       actions: " ",
     },
   ];
@@ -180,9 +196,16 @@ function ProductionTable() {
       sortable: true,
       width: "100px",
     },
+    { name: "Reciept No", selector: (row) => row.reciept, sortable: true },
+
     {
-      name: "Processing Date",
-      selector: (row) => row.processingdate,
+      name: "Name of insured",
+      selector: (row) => row.nameofinsured,
+      sortable: true,
+    },
+    {
+      name: "Class of business",
+      selector: (row) => row.naicom,
       sortable: true,
     },
     {
@@ -190,45 +213,43 @@ function ProductionTable() {
       selector: (row) => row.policynumber,
       sortable: true,
     },
-    { name: "Client Name", selector: (row) => row.clientname, sortable: true },
-    { name: "Agent Name", selector: (row) => row.agentname, sortable: true },
+    {
+      name: "Transaction Status",
+      selector: (row) => row.transactiontype,
+      sortable: true,
+    },
     {
       name: "Effective Date",
       selector: (row) => row.effectivedate,
       sortable: true,
     },
     { name: "End Date", selector: (row) => row.enddate, sortable: true },
-    { name: "Sum Insured", selector: (row) => row.suminsured, sortable: true },
-    { name: "Tot Premium", selector: (row) => row.totpremium, sortable: true },
+
     {
-      name: "Tot Commission",
-      selector: (row) => row.totcommission,
+      name: "Sales Agent",
+      selector: (row) => row.salesagent,
+      sortable: true,
+    },
+
+    { name: "Broker", selector: (row) => row.broker, sortable: true },
+    { name: "Sum Insured", selector: (row) => row.suminsured, sortable: true },
+    {
+      name: "Premium Amount",
+      selector: (row) => row.premiumamount,
+      sortable: true,
+    },
+    {
+      name: "Commission Amount",
+      selector: (row) => row.commissionamount,
       sortable: true,
     },
     { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
     {
-      name: "TOT On Vat Commission",
-      selector: (row) => row.totvat,
+      name: "Retained Premium",
+      selector: (row) => row.retainedpremium,
       sortable: true,
     },
-    {
-      name: "Sales Person",
-      selector: (row) => row.salesperson,
-      sortable: true,
-    },
-    {
-      name: "NAICOM Class Desc",
-      selector: (row) => row.naicom,
-      sortable: true,
-    },
-    {
-      name: "Transaction Type",
-      selector: (row) => row.transactiontype,
-      sortable: true,
-    },
-    { name: "Channel", selector: (row) => row.channel, sortable: true },
-    { name: "Policy Type", selector: (row) => row.policytype, sortable: true },
-    { name: "Currency", selector: (row) => row.currency, sortable: true },
+
     {
       name: "Actions",
       cell: (row) => (

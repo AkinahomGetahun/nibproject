@@ -11,8 +11,8 @@ import { useEffect } from "react";
 function Layout() {
   const { activePath, setActivePath } = useStore();
   const [error, setError] = useState("");
-  // const name = useStore((state) => state.user?.name); 
-  // const fetchUser = useStore((state) => state.fetchUser);
+  const name = useStore((state) => state.user?.name); 
+  const fetchUser = useStore((state) => state.fetchUser);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -45,9 +45,9 @@ function Layout() {
       toast.error(msg);
     }
   };
-  // useEffect(() => {
-  //   fetchUser();
-  // }, [fetchUser]);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <div className="min-h-screen bg-stone-100">
@@ -57,15 +57,15 @@ function Layout() {
         </Link>
         {/* <Link to="/logout"> */}
         <div className="flex  items-center ">
-          {/* <CircleUser color="#361d07" size={40} /> */}
-          {/* <div className="flex gap-2 text-lg mt-5 mx-2">
+           <CircleUser color="#361d07" size={40} /> 
+          <div className="flex gap-2 text-lg mt-5 mx-2">
             Hello,
             {name ? (
               <p className="text-[#8b6731] font-bold"> {name}!</p>
             ) : (
               <p>...</p>
             )}
-          </div> */}
+          </div> 
           <Menu as="div" className="relative inline-block">
             <MenuButton className="inline-flex  rounded-md  px-3  shadow-xs outline-none ">
               <ChevronDown
@@ -136,8 +136,8 @@ function Layout() {
                 <p
                   className={`${
                     activePath === "/"
-                      ? "text-[#7a3b04] font-semibold underline decoration-4 underline-offset-8"
-                      : "text-stone-900"
+                      ? "text-[#7a3b04]  font-semibold underline decoration-4 underline-offset-8"
+                      : "text-stone-900 hover:text-[#7a3b04] transition duration-300"
                   }`}
                 >
                   Claims Data Form
@@ -156,7 +156,7 @@ function Layout() {
                   className={`${
                     activePath === "/production"
                       ? "text-[#7a3b04] font-semibold underline decoration-4 underline-offset-8 "
-                      : "text-stone-900"
+                      : "text-stone-900 hover:text-[#7a3b04] transition duration-300"
                   }`}
                 >
                   Production Data Form

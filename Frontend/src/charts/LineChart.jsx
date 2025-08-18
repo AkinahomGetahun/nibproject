@@ -17,7 +17,7 @@ const BarChart = () => {
         },
       },
       plotOptions: {
-        bar: {
+        line: {
           borderRadius: 4,
           borderRadiusApplication: "end",
           horizontal: true,
@@ -50,11 +50,11 @@ const BarChart = () => {
         0
       );
       const totpremium = production.reduce(
-        (sum, c) => sum + (parseFloat(c.totpremium) || 0),
+        (sum, c) => sum + (parseFloat(c.premiumamount) || 0),
         0
       );
       const totcommission = production.reduce(
-        (sum, c) => sum + (parseFloat(c.totcommission) || 0),
+        (sum, c) => sum + (parseFloat(c.commissionamount) || 0),
         0
       );
       const netpremium = production.reduce(

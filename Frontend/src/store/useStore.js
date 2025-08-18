@@ -7,7 +7,15 @@ const useStore = create((set,get) => ({
   claims: [],
   fetchClaims: async () => {
     try {
-      const response = await api.post("/get-claims-data");
+      const response = await api.post("/get-claims-data",{
+        headers: {
+          "Content-Type": "application/json",   
+          "Accept": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+        
+      );
       const data = response.data;
 
       set({ claims: data.allclaimsdata || [] });
@@ -15,6 +23,7 @@ const useStore = create((set,get) => ({
       console.error('Error fetching claims:', error);
     }
   },
+  
   createClaim: async (data) => {
     try {
       const res = await api.post("/create-claim-data", data);
@@ -63,17 +72,17 @@ const useStore = create((set,get) => ({
       throw err; 
     }
   },
-// user: null,
-//   fetchUser: async () => {
-//     try {
-//       const response = await api.get("/user");
-//       const data = response.data;
+user: null,
+  fetchUser: async () => {
+    try {
+      const response = await api.get("/user");
+      const data = response.data;
 
-//       set({ user: data.user || null }); 
-//     } catch (error) {
-//       console.error('Error fetching user:', error);
-//     }
-//   },
+      set({ user: data.user || null }); 
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  },
   
   activePath: "/claim", 
   setActivePath: (path) => set({ activePath: path }),activeForm: "/claim",

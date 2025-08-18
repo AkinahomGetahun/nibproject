@@ -93,7 +93,7 @@ function SignUp() {
                   onChange={handleChange}
                   className=" placeholder-gray-200 border border-gray-300 text-gray-300 text-sm rounded-lg block w-full h-8 outline-none bg-stone-200 hover:border-gray-500"
                 >
-                  <option value="" selected disabled>Role</option>
+                  <option value="" selected disabled>Select role</option>
                   <option value="Administrator">Administrator</option>
                   <option value="Production">Production</option>
                   <option value="Claim">Claim</option>
