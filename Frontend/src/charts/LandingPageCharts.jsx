@@ -3,10 +3,10 @@ import BarChart from "./BarChart.jsx";
 import LineChart from "./LineChart.jsx";
 const LandingPageCharts = () => {
   return (
-    <div className="lg:flex items-center justify-center gap-20 ">
-      <div className=""><BarChart/></div>
+    <div className=" ">
+    <BarChart/>
       
-      <div className=""><LineChart /></div>
+    <LineChart />
       
     </div>
   );

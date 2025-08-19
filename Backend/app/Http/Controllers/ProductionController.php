@@ -25,7 +25,7 @@ class ProductionController extends Controller
             "naicom" => 'required',
             "transactiontype" => 'required',
             'reciept' => 'required',
-            // 'policytype' => 'required',
+            'rate' => 'required',
             // 'currency' => 'required',
 
         ]);
@@ -33,20 +33,19 @@ class ProductionController extends Controller
         $productionmodel->branchcode = $request->branchcode;
         $productionmodel->policynumber = $request->policynumber;
         $productionmodel->nameofinsured = $request->nameofinsured;
-        $productionmodel->salesagent = $request->salsagent;
+        $productionmodel->salesagent = $request->salesagent;
         $productionmodel->effectivedate = $request->effectivedate;
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
         $productionmodel->premiumamount = $request->premiumamount;
         $productionmodel->commissionamount = $request->commissionamount;
-        $productionmodel->netpremium = $request->netpremium;
+        // $productionmodel->netpremium = $request->netpremium;
         $productionmodel->retainedpremium = $request->retainedpremium;
         $productionmodel->broker = $request->broker;
         $productionmodel->naicom = $request->naicom;
         $productionmodel->transactiontype = $request->transactiontype;
         $productionmodel->reciept = $request->reciept;
-
-        // $productionmodel->policytype = $request->policytype;
+        $productionmodel->rate = $request->rate;
         // $productionmodel->currency = $request->currency;
 
         $productionmodel->save();
@@ -54,49 +53,46 @@ class ProductionController extends Controller
 
         return response()->json(['status' => 200, 'msg' => 'Production data saved successfully']);
     }
+    // Remove model event logic from controller; move to productionPost model.
 
     public function editproductiondata(Request $request)
     {
         $request->validate([
             'branchcode' => 'required',
-            'processingdate' => 'required',
             "policynumber" => 'required',
-            "clientname" => 'required',
-            "agentname" => 'required',
+            "nameofinsured" => 'required',
+            "salesagent" => 'required',
             "effectivedate" => 'required',
             'enddate' => 'required',
             "suminsured" => 'required',
-            "totpremium" => 'required',
-            'totcommission' => 'required',
-            "netpremium" => 'required',
-            "totvat" => 'required',
-            'salesperson' => 'required',
+            "premiumamount" => 'required',
+            'commissionamount' => 'required',
+            // "netpremium" => 'required',
+            "retainedpremium" => 'required',
+            'broker' => 'required',
             "naicom" => 'required',
             "transactiontype" => 'required',
-            'policytype' => 'required',
-            'currency' => 'required',
+            'reciept' => 'required',
+            'rate' => 'required',
 
         ]);
         $productionmodel = productionPost::find($request->id);
         $productionmodel->branchcode = $request->branchcode;
-        $productionmodel->processingdate = $request->processingdate;
         $productionmodel->policynumber = $request->policynumber;
-        $productionmodel->clientname = $request->clientname;
-        $productionmodel->agentname = $request->agentname;
+        $productionmodel->nameofinsured = $request->nameofinsured;
+        $productionmodel->salesagent = $request->salesagent;
         $productionmodel->effectivedate = $request->effectivedate;
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
-        $productionmodel->totpremium = $request->totpremium;
-        $productionmodel->totcommission = $request->totcommission;
-        $productionmodel->netpremium = $request->netpremium;
-        $productionmodel->totvat = $request->totvat;
-        $productionmodel->salesperson = $request->salesperson;
+        $productionmodel->premiumamount = $request->premiumamount;
+        $productionmodel->commissionamount = $request->commissionamount;
+        // $productionmodel->netpremium = $request->netpremium;
+        $productionmodel->retainedpremium = $request->retainedpremium;
+        $productionmodel->broker = $request->broker;
         $productionmodel->naicom = $request->naicom;
         $productionmodel->transactiontype = $request->transactiontype;
-        $productionmodel->policytype = $request->policytype;
-        $productionmodel->channel = $request->channel;
-        $productionmodel->currency = $request->currency;
-
+        $productionmodel->reciept = $request->reciept;
+        $productionmodel->rate = $request->rate;
         $productionmodel->update();
 
 

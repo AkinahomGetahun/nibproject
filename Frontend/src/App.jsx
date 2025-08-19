@@ -9,7 +9,6 @@ import Login from "./auth/Login";
 import ProductionDataEdit from "./EditData/ProductionDataEdit";
 import ClaimDataEdit from "./EditData/ClaimDataEdit";
 import ChangePassword from "./auth/ChangePassword";
-
 import LandingPageCharts from "./charts/LandingPageCharts";
 function App() {
   return (
@@ -25,7 +24,7 @@ function App() {
       </Route>
       {/* <Route path="/signup" element={<NavBar />}> */}
       <Route path="signup" element={<SignUp />} />
-      <Route path="login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="changepassword" element={<ChangePassword />} />
 
       {/* </Route> */}

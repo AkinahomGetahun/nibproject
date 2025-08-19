@@ -29,10 +29,10 @@ const BarChart = () => {
       xaxis: {
         categories: [
           "Sum Insured",
-          "Tot Premium",
-          "Tot Commission",
+          "Premium Amount",
+          "Commission Amount",
           "Net Premium",
-          "Tot on vat commission",
+          "Retained Premium",
         ],
       },
       colors: ["#7a3b04"],
@@ -49,11 +49,11 @@ const BarChart = () => {
         (sum, c) => sum + (parseFloat(c.suminsured) || 0),
         0
       );
-      const totpremium = production.reduce(
+      const premiumamount = production.reduce(
         (sum, c) => sum + (parseFloat(c.premiumamount) || 0),
         0
       );
-      const totcommission = production.reduce(
+      const commissionamount = production.reduce(
         (sum, c) => sum + (parseFloat(c.commissionamount) || 0),
         0
       );
@@ -61,7 +61,7 @@ const BarChart = () => {
         (sum, c) => sum + (parseFloat(c.netpremium) || 0),
         0
       );
-      const totvat = production.reduce(
+      const retainedpremium = production.reduce(
         (sum, c) => sum + (parseFloat(c.totvat) || 0),
         0
       );
@@ -71,7 +71,7 @@ const BarChart = () => {
         series: [
           {
             name: "Total Production",
-            data: [suminsured, totpremium, totcommission, netpremium, totvat],
+            data: [suminsured, premiumamount, commissionamount, netpremium, retainedpremium],
           },
         ],
       }));
@@ -79,12 +79,11 @@ const BarChart = () => {
   }, [production]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col px-20  ">
       <ReactApexChart
         options={state.options}
         series={state.series}
         type="line"
-        width={450}
         height={350}
         className="bg-stone-200 shadow-md hover:shadow-lg rounded-lg  p-4"
       />

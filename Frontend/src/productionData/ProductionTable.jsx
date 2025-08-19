@@ -6,6 +6,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import useStore from "../store/useStore";
 import pdf from "../assets/images/pdf.png";
 import csv from "../assets/images/csv.png";
+import { usePDF } from "react-to-pdf";
 
 const Export = ({ onExport }) => (
   <div className="flex">
@@ -120,21 +121,21 @@ function ProductionTable() {
     0
   );
 
- const netpremium = filteredData.reduce(
-  (sum, row) => {
-    const premium = parseFloat(row.premium) || 0;
-    const commission = parseFloat(row.commission) || 0;
-    const net = premium - commission;
-    return sum + net;
-  },
-  0
-);
-
-// total
-  // const netpremium = filteredData.reduce(
-  //   (sum, row) => sum + (parseFloat(row.netpremium) || 0),
+  //  const netpremium = filteredData.reduce(
+  //   (sum, row) => {
+  //     const premium = parseFloat(row.premium) || 0;
+  //     const commission = parseFloat(row.commission) || 0;
+  //     const net = premium - commission;
+  //     return sum + net;
+  //   },
   //   0
   // );
+
+  // total
+  const netpremium = filteredData.reduce(
+    (sum, row) => sum + (parseFloat(row.netpremium) || 0),
+    0
+  );
   const retainedpremium = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.retainedpremium) || 0),
     0
@@ -157,9 +158,9 @@ function ProductionTable() {
       salesperson: "-",
       naicom: "-",
       transactiontype: "-",
-      channel: "-",
-      // policytype: "-",
-      // currency: "-",
+      rate: "-",
+      created_at: "-",
+      updated_at: "-",
       actions: " ",
     },
   ];
@@ -244,12 +245,23 @@ function ProductionTable() {
       sortable: true,
     },
     { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
+    { name: "Rate", selector: (row) => row.rate, sortable: true },
+
     {
       name: "Retained Premium",
       selector: (row) => row.retainedpremium,
       sortable: true,
     },
-
+    {
+      name: "Created At",
+      selector: (row) => row.created_at,
+      sortable: true,
+    },
+    {
+      name: "Updated At",
+      selector: (row) => row.updated_at,
+      sortable: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
@@ -266,8 +278,12 @@ function ProductionTable() {
       ),
     },
   ];
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   return (
-    <div className="xl:w-[1200px] rounded-lg mx-auto w-full">
+    <div ref={targetRef} className="xl:w-[1200px] rounded-lg mx-auto w-full">
+      <button onClick={() => toPDF()} className="">
+        pdf
+      </button>
       <div className="flex items-center justify-between">
         <p className="lg:text-xl text-lg py-3 font-semibold text-stone-900">
           Production Data Table
@@ -317,6 +333,10 @@ function ProductionTable() {
         selectableRows
         highlightOnHover
         persistTableHead
+        pagination
+        paginationComponentOptions={{
+          rowsPerPageText: "",
+        }}
         noDataComponent={
           <div className="w-full text-left bg-[#ffdcbd] text-gray-700 italic p-4">
             No records found.

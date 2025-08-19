@@ -50,8 +50,8 @@ function Layout() {
   }, [fetchUser]);
 
   return (
-    <div className="min-h-screen bg-stone-100">
-      <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0">
+    <div className="min-h-screen bg-stone-100 ">
+      <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0 z-10">
         <Link to="/">
           <img src={Nib} className="w-60 h-20" />
         </Link>

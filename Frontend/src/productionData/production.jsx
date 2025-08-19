@@ -15,14 +15,20 @@ function production() {
     suminsured: " ",
     premiumamount: " ",
     commissionamount: " ",
-    netpremium: " ",
+    // netpremium: "6 ",
     retainedpremium: " ",
     broker: "",
     naicom: " ",
     reciept: "",
-    // channel: " ",
-    // policytype: " ",
-    // currency: "",
+    rate: " ",
+ 
+    // source: "",
+    // directName: "",
+    // directRate: "",
+    // salesagentName: "",
+    // salesagentRate: "",
+    // brokerName: "",
+    // brokerRate: "",
   });
   const [error, setError] = useState();
   const handleChange = (e) => {
@@ -169,7 +175,7 @@ function production() {
                   onChange={handleChange}
                   className="w-35 bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 >
-                  <option value="" disabled>
+                  <option value="" selected disabled>
                     Select Status
                   </option>
 
@@ -243,15 +249,15 @@ function production() {
                     </label>
                   </div>
                 </div>
-                <div className="grid grid-col gap-6">
-                  <div className="flex  gap-3">
+                <div className="grid grid-col gap-4">
+                  <div className="flex flex-col  gap-3">
                     <label>Name</label>
                     <input
                       type="text"
                       className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                     />
                   </div>
-                  <div className="flex  gap-5">
+                  <div className="flex flex-col gap-4">
                     <label>Rate</label>
                     <input
                       type="text"
@@ -262,7 +268,7 @@ function production() {
               </div>
               <div className=" grid grid-col gap-3 ">
                 <div className="gap-6 flex ">
-                  <p className="font-semibold text-stone-800">Sales Agent</p>
+                  <p className="font-semibold text-stone-800 ">Sales Agent</p>
 
                   <div className="">
                     <input id="radio-yes" name="yes-no" type="radio" />
@@ -278,8 +284,8 @@ function production() {
                     </label>
                   </div>
                 </div>
-                <div className="grid grid-col gap-6">
-                  <div className="flex  gap-3">
+                <div className="grid grid-col gap-4">
+                  <div className="flex flex-col gap-3">
                     <label>Name</label>
                     <input
                       type="text"
@@ -289,10 +295,12 @@ function production() {
                       className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                     />
                   </div>
-                  <div className="flex  gap-5">
+                  <div className="flex flex-col gap-4">
                     <label>Rate</label>
                     <input
-                      type="text"
+                      name="rate"
+                      value={formData.rate}
+                      onChange={handleChange}
                       className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                     />
                   </div>
@@ -316,8 +324,8 @@ function production() {
                     </label>
                   </div>
                 </div>
-                <div className="grid grid-col gap-6">
-                  <div className="flex gap-3">
+                <div className="grid grid-col gap-4">
+                  <div className="flex flex-col gap-3">
                     <label>Name</label>
                     <input
                       type="text"
@@ -327,7 +335,7 @@ function production() {
                       className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                     />
                   </div>
-                  <div className="flex gap-5">
+                  <div className="flex flex-col gap-4">
                     <label>Rate</label>
                     <input
                       type="text"
@@ -394,8 +402,7 @@ function production() {
                   className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
-            </div>
-            {/* <div className="flex flex-col gap-3">
+              {/* <div className="flex flex-col gap-3">
               <label>Net Premium</label>
               <input
                 type="text"
@@ -405,6 +412,7 @@ function production() {
                 className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
               />
             </div> */}
+            </div>
 
             {/* </div> */}
             {/* <div className="lg:w-70 flex flex-col gap-5 text-stone-800 "> */}

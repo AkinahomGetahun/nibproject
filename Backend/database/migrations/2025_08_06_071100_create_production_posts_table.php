@@ -14,23 +14,22 @@ return new class extends Migration
         Schema::create('production_posts', function (Blueprint $table) {
             $table->id();
             $table->string('branchcode');
-            $table->dateTime('processingdate');
             $table->integer('policynumber');
-            $table->string('clientname');
-            $table->string('agentname');
+            $table->string('nameofinsured');
+            $table->string('salesagent');
             $table->date('effectivedate');
             $table->date('enddate');
             $table->decimal('suminsured');
-            $table->decimal('totpremium');
-            $table->decimal('totcommission');
-            $table->decimal('netpremium');
-            $table->string('totvat');
-            $table->string('salesperson');
+            $table->decimal('premiumamount');
+            $table->decimal('commissionamount');
+            // $table->decimal('netpremium');
+            $table->string('retainedpremium');
+            $table->string('broker');
             $table->string('naicom');
             $table->string('transactiontype');
-            $table->string('channel');
-            $table->string('policytype');
-            $table->string('currency');
+            $table->string('reciept');
+            $table->decimal('rate');
+            // $table->string('currency');
 
             $table->timestamps();
         });

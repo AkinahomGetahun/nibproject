@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function ProductionDataEdit() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-     branchcode: " ",
+    branchcode: " ",
     nameofinsured: " ",
     policynumber: " ",
     salesagent: " ",
@@ -63,7 +63,7 @@ function ProductionDataEdit() {
       naicom: response.data.naicom || " ",
       transactiontype: response.data.transactiontype || "",
       reciept: response.data.reciept || "",
-      // channel: response.data.channel || " ",
+      rate: response.data.rate || " ",
       // policytype: response.data.policytype || "",
       // currency: response.data.currency || "",
       id: id,
@@ -99,7 +99,7 @@ function ProductionDataEdit() {
       <div className="">
         <form onSubmit={handleSubmit}>
           <h1 className="text-[23px] underline py-3">Edit Production Data </h1>
-           <div className="">
+          <div className="">
             <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-25 gap-y-8 items-center justify-center py-6 ">
               <div className="grid grid-col gap-7">
                 <div className="flex flex-col gap-3 ">
@@ -291,6 +291,9 @@ function ProductionDataEdit() {
                     <label>Rate</label>
                     <input
                       type="text"
+                      name="rate"
+                      value={formData.rate}
+                      onChange={handleChange}
                       className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                     />
                   </div>

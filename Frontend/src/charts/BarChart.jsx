@@ -81,12 +81,11 @@ const BarChart = () => {
   }, [claims]);
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 ">
+    <div className="flex flex-col px-20 py-8 z-0 ">
       <ReactApexChart
         options={state.options}
         series={state.series}
         type="bar"
-        width={450}
         height={350}
         className="bg-[#fff5eb] shadow-md hover:shadow-lg rounded-lg p-4"
       />
