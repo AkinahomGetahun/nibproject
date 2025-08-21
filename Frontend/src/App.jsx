@@ -14,7 +14,7 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<LandingPageCharts />} />
+        <Route path="landingpage" element={<LandingPageCharts />} />
         <Route path="claim" element={<Claim />} />
         <Route path="production" element={<Production />} />
         <Route path="claimtable" element={<ClaimTable />} />
@@ -23,8 +23,8 @@ function App() {
         <Route path="editclaims/:id" element={<ClaimDataEdit />} />
       </Route>
       {/* <Route path="/signup" element={<NavBar />}> */}
-      <Route path="signup" element={<SignUp />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="protectsignup" element={<SignUp />} />
+      <Route index element={<Login />} />
       <Route path="changepassword" element={<ChangePassword />} />
 
       {/* </Route> */}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\productionPost;
 use Illuminate\Http\Request;
+use App\Models\Source;
 
 class ProductionController extends Controller
 {
@@ -13,7 +14,6 @@ class ProductionController extends Controller
             'branchcode' => 'required',
             "policynumber" => 'required',
             "nameofinsured" => 'required',
-            "salesagent" => 'required',
             "effectivedate" => 'required',
             'enddate' => 'required',
             "suminsured" => 'required',
@@ -21,19 +21,20 @@ class ProductionController extends Controller
             'commissionamount' => 'required',
             // "netpremium" => 'required',
             "retainedpremium" => 'required',
-            'broker' => 'required',
             "naicom" => 'required',
             "transactiontype" => 'required',
             'reciept' => 'required',
-            'rate' => 'required',
-            // 'currency' => 'required',
+            // 'rate' => 'required',
+            // 'name' =>'required',
+
+
 
         ]);
+
         $productionmodel = new productionPost;
         $productionmodel->branchcode = $request->branchcode;
         $productionmodel->policynumber = $request->policynumber;
         $productionmodel->nameofinsured = $request->nameofinsured;
-        $productionmodel->salesagent = $request->salesagent;
         $productionmodel->effectivedate = $request->effectivedate;
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
@@ -41,19 +42,19 @@ class ProductionController extends Controller
         $productionmodel->commissionamount = $request->commissionamount;
         // $productionmodel->netpremium = $request->netpremium;
         $productionmodel->retainedpremium = $request->retainedpremium;
-        $productionmodel->broker = $request->broker;
         $productionmodel->naicom = $request->naicom;
         $productionmodel->transactiontype = $request->transactiontype;
         $productionmodel->reciept = $request->reciept;
         $productionmodel->rate = $request->rate;
-        // $productionmodel->currency = $request->currency;
+        $productionmodel->sourceofbusiness = $request->sourceofbusiness;
+        $productionmodel->name = $request->name;
+        $productionmodel->source = $request->source;
 
         $productionmodel->save();
 
 
         return response()->json(['status' => 200, 'msg' => 'Production data saved successfully']);
     }
-    // Remove model event logic from controller; move to productionPost model.
 
     public function editproductiondata(Request $request)
     {
@@ -61,26 +62,26 @@ class ProductionController extends Controller
             'branchcode' => 'required',
             "policynumber" => 'required',
             "nameofinsured" => 'required',
-            "salesagent" => 'required',
             "effectivedate" => 'required',
             'enddate' => 'required',
             "suminsured" => 'required',
             "premiumamount" => 'required',
             'commissionamount' => 'required',
-            // "netpremium" => 'required',
             "retainedpremium" => 'required',
-            'broker' => 'required',
             "naicom" => 'required',
             "transactiontype" => 'required',
             'reciept' => 'required',
             'rate' => 'required',
+            'name' => 'required',
+            'source' => 'required',
+            // 'broker' => 'required',
+            // "salesagent" => 'required',
 
         ]);
         $productionmodel = productionPost::find($request->id);
         $productionmodel->branchcode = $request->branchcode;
         $productionmodel->policynumber = $request->policynumber;
         $productionmodel->nameofinsured = $request->nameofinsured;
-        $productionmodel->salesagent = $request->salesagent;
         $productionmodel->effectivedate = $request->effectivedate;
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
@@ -88,11 +89,13 @@ class ProductionController extends Controller
         $productionmodel->commissionamount = $request->commissionamount;
         // $productionmodel->netpremium = $request->netpremium;
         $productionmodel->retainedpremium = $request->retainedpremium;
-        $productionmodel->broker = $request->broker;
         $productionmodel->naicom = $request->naicom;
         $productionmodel->transactiontype = $request->transactiontype;
         $productionmodel->reciept = $request->reciept;
         $productionmodel->rate = $request->rate;
+        // $productionmodel->name = $request->name;
+        // $productionmodel->source = $request->broker;
+
         $productionmodel->update();
 
 
@@ -115,5 +118,34 @@ class ProductionController extends Controller
     {
         productionPost::where(['id' => $request->id])->delete();
         return response()->json(['status' => 200, 'msg' => 'Row deleted!']);
+    }
+
+    public function groupByTime()
+    {
+        $byDay = productionPost::orderBy('created_at')
+            ->get()
+            ->groupBy(function ($post) {
+                return \Carbon\Carbon::parse($post->created_at)->format('Y-m-d');
+            });
+        $byWeek = productionPost::orderBy('created_at')
+            ->get()
+            ->groupBy(function ($post) {
+                return \Carbon\Carbon::parse($post->created_at)->format('o-W'); // Year-Week
+            });
+
+        // Group by Month
+        $byMonth = productionPost::orderBy('created_at')
+            ->get()
+            ->groupBy(function ($post) {
+                return \Carbon\Carbon::parse($post->created_at)->format('Y-m');
+            });
+
+
+        return response()->json([
+            'byDay'   => $byDay,
+            'byWeek'   => $byWeek,
+            'byMonth'   => $byMonth,
+
+        ]);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,21 +40,32 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out']);
-    }
     public function user(Request $request)
     {
+        $user = $request->user();
 
-        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
 
         return response()->json([
             'user' => $user,
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user && $user->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+            return response()->json(['message' => 'Logged out']);
+        }
+
+        return response()->json(['message' => 'Already logged out or invalid token'], 200);
+    }
 }
+
     // public function changepassword(Request $request)
     // {
     //     $request->validate([

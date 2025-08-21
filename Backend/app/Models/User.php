@@ -52,4 +52,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+// public function scopeForUser($query, $user)
+// {
+//     if ($user->role === 'adminstrator') {
+//         return $query;
+//     }
+//     return $query->where('user_id', $user->id);
+// }
+//     public function isAdmin()
+//     {
+//         return $this->role === 'administrator';
+//     }
+
+//     public function isClaim()
+//     {
+//         return $this->role === 'claim';
+//     }
+//     public function isProduction()
+//     {
+//         return $this->role === 'production';
+//     }
+// }
 }

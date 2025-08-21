@@ -11,16 +11,15 @@ import { useEffect } from "react";
 function Layout() {
   const { activePath, setActivePath } = useStore();
   const [error, setError] = useState("");
-  const name = useStore((state) => state.user?.name); 
+  const name = useStore((state) => state.user?.name);
   const fetchUser = useStore((state) => state.fetchUser);
   const navigate = useNavigate();
-
   const handleLogout = async (e) => {
     e.preventDefault();
     setError("");
     const token = localStorage.getItem("token");
     setTimeout(() => {
-      navigate("/login");
+      navigate("/");
     }, 2000);
     try {
       await api.post(
@@ -32,11 +31,9 @@ function Layout() {
           },
         }
       );
-     
 
       localStorage.removeItem("token");
       toast.success("Logged out !", { autoClose: 1500 });
-      // navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
       const msg =
@@ -47,17 +44,26 @@ function Layout() {
   };
   useEffect(() => {
     fetchUser();
+    if (!localStorage.getItem("token")) {
+        toast.error("Please login to continue", {
+        autoClose: 1000,
+        transition: Bounce,
+      });
+      navigate("/");
+   
+      
+    }
   }, [fetchUser]);
 
   return (
     <div className="min-h-screen bg-stone-100 ">
       <div className="h-20 flex items-center justify-between shadow-lg bg-stone-100 px-4 py-2 sticky top-0 z-10">
-        <Link to="/">
+        <Link to="/landingpage">
           <img src={Nib} className="w-60 h-20" />
         </Link>
         {/* <Link to="/logout"> */}
         <div className="flex  items-center ">
-           <CircleUser color="#361d07" size={40} /> 
+          <CircleUser color="#361d07" size={40} />
           <div className="flex gap-2 text-lg mt-5 mx-2">
             Hello,
             {name ? (
@@ -65,7 +71,7 @@ function Layout() {
             ) : (
               <p>...</p>
             )}
-          </div> 
+          </div>
           <Menu as="div" className="relative inline-block">
             <MenuButton className="inline-flex  rounded-md  px-3  shadow-xs outline-none ">
               <ChevronDown
@@ -86,18 +92,10 @@ function Layout() {
               </div>
             </MenuItems>
           </Menu>
-
-          {/* <div className="h-7 border-stone-800 border-4 hover:border-4  hover:border-[#f5a359] text-stone-900 font-semibold hover:text-stone-700 rounded-xl transition duration-700">
-            <button onClick={handleLogout}>
-              <p className="px-3">Logout</p>
-            </button>
-          </div> */}
         </div>
-        {/* </Link> */}
       </div>
 
       <div className="flex flex-col md:items-center md:justify-center py-8 px-4">
-        {/* Table Links */}
         <div className="w-full md:w-[700px] lg:w-[900px] mt-10">
           <div className="flex flex-col md:flex-row justify-center mb-6">
             <Link
@@ -124,8 +122,6 @@ function Layout() {
             </Link>
           </div>
         </div>
-
-        {/* Form Links */}
         <div className="w-full md:w-[700px] lg:w-[900px] mt-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
             <Link to="/claim">

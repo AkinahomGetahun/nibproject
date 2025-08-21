@@ -16,21 +16,17 @@ return new class extends Migration
             $table->string('branchcode');
             $table->integer('policynumber');
             $table->string('nameofinsured');
-            $table->string('salesagent');
             $table->date('effectivedate');
             $table->date('enddate');
             $table->decimal('suminsured');
             $table->decimal('premiumamount');
             $table->decimal('commissionamount');
-            // $table->decimal('netpremium');
             $table->string('retainedpremium');
-            $table->string('broker');
             $table->string('naicom');
             $table->string('transactiontype');
             $table->string('reciept');
-            $table->decimal('rate');
-            // $table->string('currency');
-
+            // $table->decimal('rate');
+            // $table->string('name')->nullable()->change();
             $table->timestamps();
         });
     }

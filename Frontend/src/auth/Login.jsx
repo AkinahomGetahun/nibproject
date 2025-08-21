@@ -1,57 +1,69 @@
-import { useState } from "react";
+import {  useState, useEffect} from "react";
 import { CircleUser, EyeOff, EyeIcon, LockKeyhole, Mail } from "lucide-react";
 import Nib from "../assets/images/NIBSlider.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../api/axios";
-
+import useStore from "../store/useStore";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showpass, setShowPass] = useState(false);
+  const role = useStore((state) => state.user?.role);
+  const fetchUser = useStore((state) => state.fetchUser);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    const token = localStorage.getItem("token");
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await api.post(
-        "/login",
-        {
-          email,
-          password,
+  try {
+    const response = await api.post(
+      "/login",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      }
+    );
 
-      const { access_token, user } = response.data;
-      localStorage.setItem("token", access_token);
-      toast.success("Logging in!", { autoClose: 1500 });
-      setTimeout(() => {
-        navigate("/");
-      }, 1600);
-    } catch (err) {
-      const msg =
-        err.response?.data?.message || "Login failed. Please try again.";
-      setError(msg);
-      console.error("Login error:", err);
-      toast.error(msg);
-    } finally {
-      setLoading(true);
-    }
-  };
+    const { access_token, user } = response.data;
+
+    localStorage.setItem("token", access_token);
+
+    toast.success("Logging in!", { autoClose: 1500 });
+
+    setTimeout(() => {
+      if (user.role === "Administrator") {
+        navigate("/landingpage");
+      } else if (user.role === "Claim") {
+        navigate("/claimtable");
+      } else if (user.role === "Production") {
+        navigate("/production");
+      } else {
+        toast.error("Unauthorized role", { autoClose: 1500 });
+      }
+    }, 1600);
+  } catch (err) {
+    const msg =
+      err.response?.data?.message || "Login failed. Please try again.";
+    setError(msg);
+    console.error("Login error:", err);
+    toast.error(msg);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div>
@@ -67,7 +79,7 @@ function Login() {
       <div className="flex flex-col-2 items-center justify-between shadow-lg rounded-10 bg-stone-100">
         <img src={Nib} className="w-70 h-20" />
 
-        <Link to="/login">
+        <Link to="/">
           <CircleUser color="#0e0702ff" size={45} className="mx-20" />
         </Link>
       </div>
@@ -98,7 +110,6 @@ function Login() {
                     required
                   />
                 </div>
-
                 <div className="relative sm:px-0 px-4">
                   <span className="absolute inset-y-0 left-6 sm:left-2 flex items-center">
                     <LockKeyhole className="text-gray-800 w-4 h-4" />
@@ -131,14 +142,14 @@ function Login() {
                   </p>
                 </button>
               </div>
-              <div className="flex gap-2 py-4">
+              {/* <div className="flex gap-2 py-4">
                 <p className="text-sm text-stone-300">Don't have an account?</p>
                 <Link to="/signup">
                   <p className="text-sm text-stone-100 hover:text-[#f5a359] underline">
                     Sign Up
                   </p>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </form>
         </div>

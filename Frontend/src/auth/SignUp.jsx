@@ -49,7 +49,7 @@ function SignUp() {
         password: "",
         password_confirmation: "",
       });
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
       setError(msg);
@@ -74,7 +74,7 @@ function SignUp() {
             <p>Enter your personal details</p>
             <div className="flex gap-4">
               <p className="text-sm text-gray-400">Already have an account?</p>
-              <Link to="/login">
+              <Link to="/">
                 <p className="text-sm text-gray-100 hover:text-[#f5a359] underline">
                   Log In
                 </p>

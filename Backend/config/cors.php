@@ -6,8 +6,8 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173'], // <-- your React dev IP and port
-    // 'allowed_origins' => ['*'], // <-- allow all origins for development
+    // 'allowed_origins' => ['http://localhost:5173'], 
+    'allowed_origins' => ['*'],
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],

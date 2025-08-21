@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+
 class productionPost extends Model
 {
 
@@ -12,7 +13,6 @@ class productionPost extends Model
         'branchcode',
         'policynumber',
         'nameofinsured',
-        'salesagent',
         'effectivedate',
         'enddate',
         'suminsured',
@@ -20,13 +20,13 @@ class productionPost extends Model
         'commissionamount',
         'netpremium',
         'retainedpremium',
-        'salesperson',
         'naicom',
         'transactiontype',
         'reciept',
-        'broker',
         'rate',
-        // 'policytype',
+        'source',
+        'name',
+         
         // 'currency',
     ];
     protected static function booted()
@@ -37,14 +37,16 @@ class productionPost extends Model
         static::saving(function ($model) {
             $model->rate = $model->premiumamount * $model->rate;
         });
+        static::saving(function ($model) {
+            $model->sourceofbusiness = $model->source . ', ' . $model->name;
+        });
     }
-     public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d M Y, h:i A'); 
-       
+        return Carbon::parse($value)->format('d M Y, h:i A');
     }
 
-   
+
     public function getUpdatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d M Y, h:i A');

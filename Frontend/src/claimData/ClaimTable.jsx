@@ -47,6 +47,7 @@ function ClaimTable() {
 
   useEffect(() => {
     fetchClaims();
+
   }, [fetchClaims]);
 
   useEffect(() => {
@@ -263,11 +264,11 @@ function ClaimTable() {
             </button>
           </Link>
 
-          <div>
+          {/* <div>
             <button onClick={() => handleDelete(row.id)}>
               <Trash2 color="#851004" size={20} />
             </button>
-          </div>
+          </div> */}
         </div>
       ),
     },

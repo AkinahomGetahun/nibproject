@@ -49,7 +49,6 @@ const useStore = create((set,get) => ({
     try {
       const response = await api.post("/get-production-data");
       const data = response.data;
-
       set({ production: data.allproductiondata || [] });
     } catch (error) {
       console.error('Error fetching production:', error);
@@ -73,15 +72,36 @@ const useStore = create((set,get) => ({
     }
   },
 user: null,
-  fetchUser: async () => {
-    try {
-      const response = await api.get("/user");
-      const data = response.data;
 
-      set({ user: data.user || null }); 
-    } catch (error) {
-      console.error('Error fetching user:', error);
+fetchUser: async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.get("/user", {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+
+    const data = response.data;
+    set({ user: data.user || null });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      set({ user: null });
+    return data; 
     }
+  }
+},
+  groupedData: null,
+  sortType: "byMonth",
+  setSortType: (type) => set({ sortType: type }),
+  fetchGroupedData: async (data) => {
+    const res = await api.get("/groupbytime");
+    console.log(res.data); // { byDay: {...}, byWeek: {...}, byMonth: {...} }
+    set({ groupedData: data });
   },
   
   activePath: "/claim", 

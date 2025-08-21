@@ -1,13 +1,12 @@
 import React, { useMemo, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { Plus, FileSpreadsheet, SquarePen, Trash2, Search } from "lucide-react";
+import { Plus, SquarePen, Trash2, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import useStore from "../store/useStore";
-import pdf from "../assets/images/pdf.png";
 import csv from "../assets/images/csv.png";
 import { usePDF } from "react-to-pdf";
-
+import api  from "../api/axios"; 
 const Export = ({ onExport }) => (
   <div className="flex">
     {/* <button className="text-white py-1 rounded-lg text-sm flex gap-2">
@@ -88,6 +87,19 @@ const customStyles = {
 };
 
 function ProductionTable() {
+  // const [data, setData] = useState(null);
+  // const [sortType, setSortType] = useState("");
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await api.get("/groupbytime");
+  //     setData(res.data); 
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // const sortedPosts = sortType && data ? data[sortType] : null;
+
   const [filterText, setFilterText] = useState("");
   const { production, fetchProduction, deleteProduction } = useStore();
 
@@ -101,12 +113,6 @@ function ProductionTable() {
       .toLowerCase()
       .includes(filterText.toLowerCase())
   );
-  // const netpremium = filteredData.reduce(
-  //   (difference, row) =>
-  //     difference + (parseFloat(row.totpremium) || 0) - (parseFloat(row.totcommission) || 0), 0
-
-  // )
-
   const suminsured = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.suminsured) || 0),
     0
@@ -120,18 +126,6 @@ function ProductionTable() {
     (sum, row) => sum + (parseFloat(row.commissionamount) || 0),
     0
   );
-
-  //  const netpremium = filteredData.reduce(
-  //   (sum, row) => {
-  //     const premium = parseFloat(row.premium) || 0;
-  //     const commission = parseFloat(row.commission) || 0;
-  //     const net = premium - commission;
-  //     return sum + net;
-  //   },
-  //   0
-  // );
-
-  // total
   const netpremium = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.netpremium) || 0),
     0
@@ -147,7 +141,6 @@ function ProductionTable() {
       branchcode: "Total",
       policynumber: "-",
       nameofinsured: "-",
-      agentname: "-",
       effectivedate: "-",
       enddate: "-",
       suminsured: suminsured,
@@ -155,10 +148,12 @@ function ProductionTable() {
       commissionamount: commissionamount,
       netpremium: netpremium,
       retainedpremium: retainedpremium,
-      salesperson: "-",
       naicom: "-",
       transactiontype: "-",
       rate: "-",
+      sourceofbusiness: "",
+      source: "",
+      name: "",
       created_at: "-",
       updated_at: "-",
       actions: " ",
@@ -183,6 +178,7 @@ function ProductionTable() {
       toast.error("Failed to delete claim.");
     }
   };
+
   useEffect(() => {
     fetchProduction();
   }, [fetchProduction]);
@@ -226,13 +222,6 @@ function ProductionTable() {
     },
     { name: "End Date", selector: (row) => row.enddate, sortable: true },
 
-    {
-      name: "Sales Agent",
-      selector: (row) => row.salesagent,
-      sortable: true,
-    },
-
-    { name: "Broker", selector: (row) => row.broker, sortable: true },
     { name: "Sum Insured", selector: (row) => row.suminsured, sortable: true },
     {
       name: "Premium Amount",
@@ -245,6 +234,12 @@ function ProductionTable() {
       sortable: true,
     },
     { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
+    {
+      name: "Source of Buisness",
+      selector: (row) => row.sourceofbusiness,
+      sortable: true,
+    },
+
     { name: "Rate", selector: (row) => row.rate, sortable: true },
 
     {
@@ -271,9 +266,9 @@ function ProductionTable() {
               <SquarePen color="#fc8823" size={20} />
             </button>
           </Link>
-          <button onClick={() => handleDelete(row.id)}>
+          {/* <button onClick={() => handleDelete(row.id)}>
             <Trash2 color="#851004" size={20} />
-          </button>
+          </button> */}
         </div>
       ),
     },
@@ -281,14 +276,43 @@ function ProductionTable() {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   return (
     <div ref={targetRef} className="xl:w-[1200px] rounded-lg mx-auto w-full">
-      <button onClick={() => toPDF()} className="">
+      {/* <button onClick={() => toPDF()} className="">
         pdf
-      </button>
+      </button> */}
       <div className="flex items-center justify-between">
         <p className="lg:text-xl text-lg py-3 font-semibold text-stone-900">
           Production Data Table
         </p>
         <div className="text-[13px] flex sm:gap-5 gap-1">
+          <div>
+            <select
+              className="outline-none bg-[#f8d9be] rounded-lg w-23"
+              // value={sortType}
+              // onChange={(e) => setSortType(e.target.value)}
+            >
+              <option disabled>sort by</option>
+              <option value="byDay">Day</option>
+              <option value="byWeek">Week</option>
+              <option value="byMonth">Month</option>
+            </select>
+{/* 
+            <div className="mt-4">
+              {sortedPosts &&
+                Object.entries(sortedPosts).map(([groupKey, posts]) => (
+                  <div key={groupKey} className="mb-4 p-2 border rounded">
+                    <h3 className="font-bold">{groupKey}</h3>
+                    <ul className="list-disc ml-4">
+                      {posts.map((post) => (
+                        <li key={post.id}>
+                          {post.nameofinsured} ({post.policynumber})
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+            </div> */}
+          </div>
+
           <div className="flex relative">
             <span className=" absolute mx-2 mt-2 flex items-center">
               <Search size={20} color="#292524" />
@@ -300,7 +324,6 @@ function ProductionTable() {
               onChange={(e) => setFilterText(e.target.value)}
             />
           </div>
-
           <Link to="/production">
             <button className="bg-stone-800 sm:w-[160px] h-[35px] flex gap-1 rounded-xl px-2 ">
               <Plus size={16} color="white" className="mt-2.5" />
