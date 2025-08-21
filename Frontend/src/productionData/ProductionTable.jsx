@@ -235,12 +235,16 @@ function ProductionTable() {
     },
     { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
     {
-      name: "Source of Buisness",
-      selector: (row) => row.sourceofbusiness,
+      name: "SOB (Source)",
+      selector: (row) => row.source,
       sortable: true,
     },
-
-    { name: "Rate", selector: (row) => row.rate, sortable: true },
+{
+      name: "SOB (Name)",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    { name: "SOB (Rate)", selector: (row) => row.rate, sortable: true },
 
     {
       name: "Retained Premium",
@@ -266,9 +270,9 @@ function ProductionTable() {
               <SquarePen color="#fc8823" size={20} />
             </button>
           </Link>
-          {/* <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id)}>
             <Trash2 color="#851004" size={20} />
-          </button> */}
+          </button>
         </div>
       ),
     },

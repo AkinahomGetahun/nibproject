@@ -100,7 +100,7 @@ fetchUser: async () => {
   setSortType: (type) => set({ sortType: type }),
   fetchGroupedData: async (data) => {
     const res = await api.get("/groupbytime");
-    console.log(res.data); // { byDay: {...}, byWeek: {...}, byMonth: {...} }
+    console.log(res.data); 
     set({ groupedData: data });
   },
   

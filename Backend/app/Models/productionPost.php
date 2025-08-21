@@ -37,9 +37,7 @@ class productionPost extends Model
         static::saving(function ($model) {
             $model->rate = $model->premiumamount * $model->rate;
         });
-        static::saving(function ($model) {
-            $model->sourceofbusiness = $model->source . ', ' . $model->name;
-        });
+       
     }
     public function getCreatedAtAttribute($value)
     {

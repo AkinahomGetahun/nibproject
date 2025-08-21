@@ -119,33 +119,30 @@ class ProductionController extends Controller
         productionPost::where(['id' => $request->id])->delete();
         return response()->json(['status' => 200, 'msg' => 'Row deleted!']);
     }
+public function groupByTime()
+{
+    $today = \Carbon\Carbon::today();
+    $startOfWeek = \Carbon\Carbon::now()->startOfWeek();
+    $endOfWeek = \Carbon\Carbon::now()->endOfWeek();
+    $startOfMonth = \Carbon\Carbon::now()->startOfMonth();
+    $endOfMonth = \Carbon\Carbon::now()->endOfMonth();
 
-    public function groupByTime()
-    {
-        $byDay = productionPost::orderBy('created_at')
-            ->get()
-            ->groupBy(function ($post) {
-                return \Carbon\Carbon::parse($post->created_at)->format('Y-m-d');
-            });
-        $byWeek = productionPost::orderBy('created_at')
-            ->get()
-            ->groupBy(function ($post) {
-                return \Carbon\Carbon::parse($post->created_at)->format('o-W'); // Year-Week
-            });
+    $todayPosts = productionPost::whereDate('created_at', $today)
+        ->orderBy('created_at')
+        ->get();
 
-        // Group by Month
-        $byMonth = productionPost::orderBy('created_at')
-            ->get()
-            ->groupBy(function ($post) {
-                return \Carbon\Carbon::parse($post->created_at)->format('Y-m');
-            });
+    $weekPosts = productionPost::whereBetween('created_at', [$startOfWeek, $endOfWeek])
+        ->orderBy('created_at')
+        ->get();
 
+    $monthPosts = productionPost::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->orderBy('created_at')
+        ->get();
 
-        return response()->json([
-            'byDay'   => $byDay,
-            'byWeek'   => $byWeek,
-            'byMonth'   => $byMonth,
-
-        ]);
-    }
+    return response()->json([
+        'today' => $todayPosts,
+        'thisWeek' => $weekPosts,
+        'thisMonth' => $monthPosts,
+    ]);
+}
 }

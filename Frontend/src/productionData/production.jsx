@@ -2,38 +2,10 @@ import { useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Pointer } from "lucide-react";
 
 function production() {
   const navigate = useNavigate();
-  const [source, setSource] = useState("");
-  const [name, setName] = useState("");
-  const [rate, setRate] = useState("");
-  const [entries, setEntries] = useState([]);
-
-  const handleSourceChange = (e) => {
-    setSource(e.target.value);
-    setName("");
-    setRate("");
-  };
-
-  //  const handleSourceSubmit = () => {
-  //   if (!source || !name || !rate) {
-  //     alert("Please fill source of business.");
-  //     return;
-  //   }
-
-  //   const newEntry = {
-  //     sourceofbusiness: `${source}, ${name}`,
-  //     rate,
-  //   };
-
-  //   setEntries((prev) => [...prev, newEntry]);
-
-  //   setSource("");
-  //   setName("");
-  //   setRate("");
-  // };
+  const sources = ["Direct", "Sales Agent", "Broker"];
 
   const [formData, setFormData] = useState({
     branchcode: " ",
@@ -52,7 +24,14 @@ function production() {
     name: "",
   });
   const [error, setError] = useState();
-
+  const handleSourceChange = (src) => {
+    setFormData((prev) => ({
+      ...prev,
+      source: src,
+      name: "", // reset
+      rate: "", // reset
+    }));
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -209,150 +188,44 @@ function production() {
               Source of Business
             </p>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-15 gap-y-8 items-center justify-center ">
-              <div className="grid  gap-9">
-                <div className="gap-6 flex ">
-                  <input
-                    type="radio"
-                    id="direct"
-                    name="source"
-                    value="Direct"
-                    checked={source === "Direct"}
-                    onChange={handleSourceChange}
-                  />
-                  <label htmlFor="direct" className="font-semibold">
-                    Direct
-                  </label>
-                </div>
-                <div className="grid grid-col gap-7">
-                  <div className="flex flex-col  gap-3">
+              {sources.map((src) => (
+                <div key={src} className="grid gap-9">
+                  <div className="flex gap-6 items-center">
                     <input
-                      type="text"
-                      name="name"
-                      placeholder="Name"
-                      value={source === "Direct" ? name : "-"}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={source !== "Direct"}
-                      className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
-              border-2 
-              ${source === "Direct" ? "border-[#8b6731]" : "border-stone-400"}`}
+                      type="radio"
+                      id={src}
+                      value={src}
+                      checked={formData.source === src}
+                      onChange={() => handleSourceChange(src)}
                     />
+                    <label htmlFor={src}>{src}</label>
                   </div>
-                  <div className="flex flex-col gap-4">
-                    <input
-                      type="text"
-                      name="rate"
-                      placeholder="Rate"
-                      value={source === "Direct" ? rate : "-"}
-                      onChange={(e) => setRate(e.target.value)}
-                      disabled={source !== "Direct"}
-                      className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
-              border-2 
-              ${
-                source === "Direct"
-                  ? "border-[#8b6731] transition"
-                  : "border-stone-400"
-              }`}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="grid gap-9">
-                <div className="gap-6 flex ">
-                  <input
-                    type="radio"
-                    id="sales"
-                    name="source"
-                    value="Sales Agent"
-                    checked={source === "Sales Agent"}
-                    onChange={handleSourceChange}
-                  />
-                  <label htmlFor="sales" className="font-semibold">
-                    Sales Agent
-                  </label>
-                </div>
-                <div className="grid grid-col gap-7">
+
                   <input
                     type="text"
                     name="name"
                     placeholder="Name"
-                    value={source === "Sales Agent" ? name : "-"}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={source !== "Sales Agent"}
+                    value={formData.source === src ? formData.name : ""}
+                    onChange={handleChange}
+                    disabled={formData.source !== src}
                     className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${
-                source === "Sales Agent"
-                  ? "border-[#8b6731]"
-                  : "border-stone-400"
-              }`}
+              ${formData === src ? "border-[#8b6731]" : "border-stone-400"}`}
                   />
+
                   <input
                     type="text"
                     name="rate"
                     placeholder="Rate"
-                    value={source === "Sales Agent" ? rate : "-"}
-                    onChange={(e) => setRate(e.target.value)}
-                    disabled={source !== "Sales Agent"}
+                    value={formData.source === src ? formData.rate : ""}
+                    onChange={handleChange}
+                    disabled={formData.source !== src}
                     className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${
-                source === "Sales Agent"
-                  ? "border-[#8b6731] transition"
-                  : "border-stone-400"
-              }`}
+              ${formData === src ? "border-[#8b6731] " : "border-stone-400"}`}
                   />
                 </div>
-              </div>
-              <div className="grid gap-9">
-                <div className="gap-6 flex ">
-                  <input
-                    type="radio"
-                    id="broker"
-                    name="source"
-                    value="Broker"
-                    checked={source === "Broker"}
-                    onChange={handleSourceChange}
-                  />
-                  <label htmlFor="broker" className="font-semibold">
-                    Broker
-                  </label>
-                </div>
-                <div className="grid grid-col gap-7">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={source === "Broker" ? name : "-"}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={source !== "Broker"}
-                    className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
-              border-2 
-              ${source === "Broker" ? "border-[#8b6731]" : "border-stone-400"}`}
-                  />
-                  <input
-                    type="text"
-                    name="rate"
-                    placeholder="Rate"
-                    value={source === "Broker" ? rate : "-"}
-                    onChange={(e) => setRate(e.target.value)}
-                    disabled={source !== "Broker"}
-                    className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
-              border-2 
-              ${
-                source === "Broker"
-                  ? "border-[#8b6731] transition"
-                  : "border-stone-400"
-              }`}
-                  />
-                </div>
-              </div>
-              {/* <div
-                className="bg-stone-300 h-8 w-15 rounded-xl text-white"
-                onClick={handleSourceSubmit}
-                cursor:Pointer
-              >
-                Enter
-              </div> */}
+              ))}
             </div>
             <hr className="lg:w-[800px] text-stone-200 items-center justify-center px-7 mt-9" />
             <hr className="lg:w-[800px] text-stone-200  items-center justify-center px-7  " />
