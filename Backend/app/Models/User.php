@@ -7,15 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
-
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
-
-
     protected $connection = 'mysql';
     protected $table = 'users';
     /**
@@ -52,25 +49,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-// public function scopeForUser($query, $user)
-// {
-//     if ($user->role === 'adminstrator') {
-//         return $query;
-//     }
-//     return $query->where('user_id', $user->id);
-// }
-//     public function isAdmin()
-//     {
-//         return $this->role === 'administrator';
-//     }
+   public function scopeForUser($query, $user)
+{
+    Log::info('User role: ' . $user->role);
+    Log::info('User ID: ' . $user->id);
 
-//     public function isClaim()
-//     {
-//         return $this->role === 'claim';
-//     }
-//     public function isProduction()
-//     {
-//         return $this->role === 'production';
-//     }
-// }
+    if ($user->role === 'Administrator') {
+        Log::info('Admin user detected, returning full query');
+        return $query;
+    }
+
+    Log::info('Filtering by id = ' . $user->id);
+    return $query->where('id', $user->id);
+}
+
 }

@@ -179,6 +179,7 @@ function SignUp() {
                 </div>
               </div>
               <div className="bg-stone-900 text-stone-100 border-2 border-[#f5a359] w-[150px] h-[30px] rounded-2xl hover:bg-stone-800 hover:text-[#f5a359] hover:fontsemibold duration-300 mx-auto mt-8 ">
+               
                 <button type="submit">
                   <p className=" rounded-xl py-1 text-md px-10 duration-300 font-semibold">
                     Register

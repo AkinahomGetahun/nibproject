@@ -67,16 +67,13 @@ class ProductionController extends Controller
             "suminsured" => 'required',
             "premiumamount" => 'required',
             'commissionamount' => 'required',
+            // "netpremium" => 'required',
             "retainedpremium" => 'required',
             "naicom" => 'required',
             "transactiontype" => 'required',
             'reciept' => 'required',
-            'rate' => 'required',
-            'name' => 'required',
-            'source' => 'required',
-            // 'broker' => 'required',
-            // "salesagent" => 'required',
-
+            // 'rate' => 'required',
+            // 'name' =>'required',
         ]);
         $productionmodel = productionPost::find($request->id);
         $productionmodel->branchcode = $request->branchcode;
@@ -93,8 +90,10 @@ class ProductionController extends Controller
         $productionmodel->transactiontype = $request->transactiontype;
         $productionmodel->reciept = $request->reciept;
         $productionmodel->rate = $request->rate;
-        // $productionmodel->name = $request->name;
-        // $productionmodel->source = $request->broker;
+        $productionmodel->sourceofbusiness = $request->sourceofbusiness;
+        $productionmodel->name = $request->name;
+        $productionmodel->source = $request->source;
+
 
         $productionmodel->update();
 
@@ -119,30 +118,32 @@ class ProductionController extends Controller
         productionPost::where(['id' => $request->id])->delete();
         return response()->json(['status' => 200, 'msg' => 'Row deleted!']);
     }
-public function groupByTime()
-{
-    $today = \Carbon\Carbon::today();
-    $startOfWeek = \Carbon\Carbon::now()->startOfWeek();
-    $endOfWeek = \Carbon\Carbon::now()->endOfWeek();
-    $startOfMonth = \Carbon\Carbon::now()->startOfMonth();
-    $endOfMonth = \Carbon\Carbon::now()->endOfMonth();
+    public function groupByTime()
+    {
+        $today = \Carbon\Carbon::today();
+        $startOfWeek = \Carbon\Carbon::now()->startOfWeek();
+        $endOfWeek = \Carbon\Carbon::now()->endOfWeek();
+        $startOfMonth = \Carbon\Carbon::now()->startOfMonth();
+        $endOfMonth = \Carbon\Carbon::now()->endOfMonth();
 
-    $todayPosts = productionPost::whereDate('created_at', $today)
-        ->orderBy('created_at')
-        ->get();
+        $todayPosts = productionPost::whereDate('created_at', $today)
+            ->orderBy('created_at')
+            ->get();
 
-    $weekPosts = productionPost::whereBetween('created_at', [$startOfWeek, $endOfWeek])
-        ->orderBy('created_at')
-        ->get();
+        $weekPosts = productionPost::whereBetween('created_at', [$startOfWeek, $endOfWeek])
+            ->orderBy('created_at')
+            ->get();
 
-    $monthPosts = productionPost::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->orderBy('created_at')
-        ->get();
+        $monthPosts = productionPost::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->orderBy('created_at')
+            ->get();
+        $all = productionPost::orderBy('created_at')->get();
+        return response()->json([
+            'all' => $all,
 
-    return response()->json([
-        'today' => $todayPosts,
-        'thisWeek' => $weekPosts,
-        'thisMonth' => $monthPosts,
-    ]);
-}
+            'today' => $todayPosts,
+            'thisWeek' => $weekPosts,
+            'thisMonth' => $monthPosts,
+        ]);
+    }
 }

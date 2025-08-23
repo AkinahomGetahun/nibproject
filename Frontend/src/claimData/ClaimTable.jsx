@@ -1,12 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
-import {
-  Plus,
-  Search,
-  Trash2,
-  SquarePen,
-  EyeIcon,
-} from "lucide-react";
+import { Plus, Search, Trash2, SquarePen, EyeIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import useStore from "../store/useStore";
@@ -47,7 +41,6 @@ function ClaimTable() {
 
   useEffect(() => {
     fetchClaims();
-
   }, [fetchClaims]);
 
   useEffect(() => {
@@ -143,6 +136,7 @@ function ClaimTable() {
   const dataWithTotal = [
     ...filteredData,
     {
+      id: "totalrow",
       claimnumber: "Total",
       branch: "-",
       policyclass: "-",
@@ -171,6 +165,7 @@ function ClaimTable() {
         backgroundColor: "#f7c9a0",
         color: "#000",
       },
+      
     },
   ];
   //end
@@ -255,22 +250,28 @@ function ClaimTable() {
     { name: "Agency", selector: (row) => row.agency, sortable: true },
     {
       name: "Actions",
-      cell: (row) => (
+       cell: (row) => {
+         if (row.claimnumber === "Total") {
+        return null; 
+      }
+      return (
+        
         <div className="flex gap-2">
-         
           <Link to={`/editclaims/${row.id}`}>
             <button>
               <SquarePen color="#fc8823" size={20} />
             </button>
           </Link>
 
-          {/* <div>
+          <div>
             <button onClick={() => handleDelete(row.id)}>
               <Trash2 color="#851004" size={20} />
             </button>
-          </div> */}
+          </div>
         </div>
-      ),
+      )
+     
+       },
     },
   ];
 
@@ -292,7 +293,7 @@ function ClaimTable() {
               onChange={(e) => setFilterText(e.target.value)}
             />
           </div>
-          <Link to="/">
+          <Link to="/claim">
             <button className="bg-stone-800 sm:w-[140px] h-[35px] flex gap-1 rounded-xl px-2">
               <Plus size={16} color="white" className="mt-2.5" />
               <p className="sm:text-white py-3 hidden sm:block">

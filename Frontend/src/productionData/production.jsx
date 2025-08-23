@@ -17,6 +17,7 @@ function production() {
     premiumamount: " ",
     commissionamount: " ",
     retainedpremium: " ",
+    transactiontype:"",
     naicom: " ",
     reciept: "",
     rate: " ",
@@ -210,19 +211,19 @@ function production() {
                     disabled={formData.source !== src}
                     className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${formData === src ? "border-[#8b6731]" : "border-stone-400"}`}
+              ${formData.source === src ? "border-[#8b6731]" : "border-stone-400"}`}
                   />
 
                   <input
                     type="text"
                     name="rate"
-                    placeholder="Rate"
+                    placeholder="rate (0.15)"
                     value={formData.source === src ? formData.rate : ""}
                     onChange={handleChange}
                     disabled={formData.source !== src}
                     className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${formData === src ? "border-[#8b6731] " : "border-stone-400"}`}
+              ${formData.source === src ? "border-[#8b6731] transition" : "border-stone-400"}`}
                   />
                 </div>
               ))}

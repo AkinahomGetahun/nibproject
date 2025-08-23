@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
+
     public function login(Request $request)
     {
         $request->validate([
@@ -39,18 +44,21 @@ class LoginController extends Controller
             ]);
         }
     }
-
     public function user(Request $request)
     {
-        $user = $request->user();
-
+        $user = Auth::user();
+        \Log::info('Authenticated user:', [
+        'id' => $user->id ?? 'null',
+        'role' => $user->role ?? 'null',
+        'email' => $user->email ?? 'null',
+    ]);
         if (!$user) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        return response()->json([
-            'user' => $user,
-        ]);
+        $users = User::forUser(Auth::user())->get();
+
+        return response()->json(['users' => $users]);
     }
 
     public function logout(Request $request)
@@ -64,23 +72,48 @@ class LoginController extends Controller
 
         return response()->json(['message' => 'Already logged out or invalid token'], 200);
     }
+
+    public function changepassword(Request $request)
+    {
+        $authUser = Auth::user();
+
+        if (!$authUser) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $user = User::find($authUser->id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $request->validate([
+            'temporarypassword' => 'required',
+            'newpassword' => 'required|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->temporarypassword, $user->password)) {
+            return response()->json(['message' => 'Temporary password is incorrect'], 403);
+        }
+
+        $user->password = bcrypt($request->newpassword);
+        $user->save();
+
+        return response()->json(['message' => 'Password changed successfully']);
+    }
 }
 
-    // public function changepassword(Request $request)
+
+ //  public function index(): View
     // {
-    //     $request->validate([
-    //         'current_password' => 'required',
-    //         'new_password' => 'required|min:8|confirmed',
-    //     ]);
+    //     $users = DB::table('users')->get();
 
-    //     $user = Auth::user();
+    //     return view('user.index', ['users' => $users]);
+    // }
 
-    //     if (!Auth::attempt(['email' => $user->email, 'password' => $request->current_password])) {
-    //         return response()->json(['message' => 'Current password is incorrect'], 403);
-    //     }
+    // public function update(Request $request, $id)
+    // {
+    //     $user = User::findOrFail($id);
+    //     $user->update($request->all());
 
-    //     $user->password = bcrypt($request->new_password);
-    //     $user->save();
-
-    //     return response()->json(['message' => 'Password changed successfully']);
+    //     return redirect()->route('user.index')->with('success', 'User updated successfully');
     // }

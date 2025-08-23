@@ -76,20 +76,26 @@ function Layout() {
             <MenuButton className="inline-flex  rounded-md  px-3  shadow-xs outline-none ">
               <ChevronDown
                 size={30}
-                className="-mr-1 mt-2 text-gray-800 hover:text-[#f6b06f] font-bold"
+                className="-mr-1 mt-2 text-gray-800 hover:text-[#f6b06f] "
               />
             </MenuButton>
             <MenuItems
               transition
-              className="absolute right-0 z-10 w-26 h-12 font-bold bg-[#f7c9a0] text-stone-900 origin-top-right rounded-b-md  shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+              className="absolute right-0 z-10 w-40 h- font-bold bg-[#f1e1d3] text-stone-900 origin-top-right rounded-b-md  shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
             >
               <div className="py-1">
                 <button onClick={handleLogout}>
-                  <MenuItem className=" px-4 py-2 text-md text-gray-700 data-focus:text-gray-900 data-focus:outline-hidden">
+                  <MenuItem className=" px-4 py-2 text-sm  w-40 hover:bg-[#f5c69e] text-gray-700 data-focus:text-gray-900 data-focus:outline-hidden">
                     <p className="px-3">Logout</p>
                   </MenuItem>
                 </button>
+                 <Link to='/changepassword'>
+                  <MenuItem className=" py-2 text-sm text-gray-700 w-40 hover:bg-[#f5c69e] data-focus:text-gray-900 data-focus:outline-hidden">
+                    <p className="px-4">Change Password</p>
+                  </MenuItem>
+                </Link>
               </div>
+               
             </MenuItems>
           </Menu>
         </div>

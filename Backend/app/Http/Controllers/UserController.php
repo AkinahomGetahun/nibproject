@@ -1,31 +1,37 @@
-<!-- // use Illuminate\Support\Facades\Auth;
-// use Illuminate\Http\Request;
-// use App\Http\Controllers\Controller;
-// use App\Models\User;
+<!-- 
+namespace App\Http\Controllers;
 
-// class userController extends Controller
-// {
-//     public function user(Request $request)
-//     {
-// {
-//     $user = Auth::user();
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
 
-//     if ($user->role === 'adminstartor') {
-//         $data = User::all(); // admin sees everything
-//     } else {
-//         $data = User::where('user_id', $user->id)->get(); // regular users only see their own
-//     }
+class UserController extends Controller
+{
+    public function index(): View
+    {
+        $user = Auth::User();
 
-//     return view('user.index', compact('data'));
-//     }
-// }
+        if ($user->role === 'admin') {
+            $users = User::all();
+        } else {
+            $users = User::where('id', $user->id)->get();
+        }
 
-//     public function update(Request $request, $id)
-//     {
-//         $user = User::findOrFail($id);
-//         $user->update($request->all());
+        return view('user.index', ['users' => $users]);
+    }
+    public function update(Request $request, $id)
+    {
+        $user = Auth::User();
+        $targetUser = User::findOrFail($id);
 
-//         return redirect()->route('user.index')->with('success', 'User updated successfully');
-//     }
+        if ($user->role !== 'admin' && $user->id !== $targetUser->id) {
+            abort(403, 'Unauthorized');
+        }
 
-// }
+        $targetUser->update($request->all());
+
+        return redirect()->route('user.index')->with('success', 'User updated successfully');
+    }
+}  -->

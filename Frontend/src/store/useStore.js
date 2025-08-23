@@ -95,15 +95,20 @@ fetchUser: async () => {
     }
   }
 },
-  groupedData: null,
-  sortType: "byMonth",
-  setSortType: (type) => set({ sortType: type }),
-  fetchGroupedData: async (data) => {
+
+  groupedPosts: { all: [], today: [], thisWeek: [], thisMonth: [] }, 
+  fetchGroupedPosts: async () => {
+  try {
     const res = await api.get("/groupbytime");
-    console.log(res.data); 
-    set({ groupedData: data });
-  },
-  
+    const { today, thisWeek, thisMonth } = res.data;
+    const all = [...today, ...thisWeek, ...thisMonth];
+    set({ groupedPosts: { today, thisWeek, thisMonth, all } });
+    console.log(res.data)
+  } catch (err) {
+    console.error(err);
+  }
+},
+
   activePath: "/claim", 
   setActivePath: (path) => set({ activePath: path }),activeForm: "/claim",
 

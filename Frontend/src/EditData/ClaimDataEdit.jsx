@@ -82,76 +82,72 @@ function ClaimDataEdit() {
     console.log(formData);
   };
   return (
-    <div className=" flex flex-col items-center justify-center  border-2 border-stone-200 lg:w-[1200px] mx-auto rounded-md bg-stone-50 ">
+    <div className=" flex flex-col items-center justify-center lg:w-[1000px] border-2 border-stone-200  mx-auto rounded-md bg-stone-50 ">
       <div className="">
         <form onSubmit={handleSubmit}>
           <h1 className="text-[23px] underline py-6">Edit Claims Data </h1>
-          <div className="flex flex-col-2  gap-35 items-center justify-center ">
-            <div className=" w-70 flex flex-col gap-6 ">
-              <div className="flex flex-col gap-3">
-                <label>Branch</label>
-                <input
-                  name="branch"
-                  value={formData.branch}
-                  onChange={handleChange}
-                  type="text"
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className="flex flex-col gap-3 text-[#1e1408] text-bold">
-                <label>Claim Number </label>
-                <input
-                  type="text"
-                  placeholder="Claims/270222/EN/002"
-                  name="claimnumber"
-                  value={formData.claimnumber}
-                  onChange={handleChange}
-                  className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731]"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label>Policy Class </label>
-                <input
-                  type="text"
-                  name="policyclass"
-                  value={formData.policyclass}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>{" "}
-              <div className="flex flex-col gap-3">
-                <label>Policy Number</label>
-                <input
-                  type="text"
-                  name="policynumber"
-                  value={formData.policynumber}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>{" "}
-              <div className="flex flex-col gap-3">
-                <label>Total Claims Paid</label>
-                <input
-                  type="text"
-                  name="totalclaimspaid"
-                  value={formData.totalclaimspaid}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label>Treaty Recovery</label>
-                <input
-                  type="text"
-                  name="treatyrecovery"
-                  value={formData.treatyrecovery}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-25 gap-y-8 items-center justify-center ">
+            <div className="flex flex-col gap-3">
+              <label>Branch</label>
+              <input
+                name="branch"
+                value={formData.branch}
+                onChange={handleChange}
+                type="text"
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
             </div>
-
-            <div className="w-70 flex flex-col gap-6 ">
+            <div className="flex flex-col gap-3 text-[#1e1408] text-bold">
+              <label>Claim Number </label>
+              <input
+                type="text"
+                placeholder="Claims/270222/EN/002"
+                name="claimnumber"
+                value={formData.claimnumber}
+                onChange={handleChange}
+                className="h-[35px] bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731]"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label>Policy Class </label>
+              <input
+                type="text"
+                name="policyclass"
+                value={formData.policyclass}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>{" "}
+            <div className="flex flex-col gap-3">
+              <label>Policy Number</label>
+              <input
+                type="text"
+                name="policynumber"
+                value={formData.policynumber}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>{" "}
+            <div className="flex flex-col gap-3">
+              <label>Total Claims Paid</label>
+              <input
+                type="text"
+                name="totalclaimspaid"
+                value={formData.totalclaimspaid}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label>Treaty Recovery</label>
+              <input
+                type="text"
+                name="treatyrecovery"
+                value={formData.treatyrecovery}
+                onChange={handleChange}
+                className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
+              />
+            </div>
               <div className="flex flex-col gap-3">
                 <label>Co-insurer Recovery </label>
                 <input
@@ -159,7 +155,7 @@ function ClaimDataEdit() {
                   name="coinsurerrecovery"
                   value={formData.coinsurerrecovery}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -169,7 +165,7 @@ function ClaimDataEdit() {
                   name="facrecovery"
                   value={formData.facrecovery}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -179,7 +175,7 @@ function ClaimDataEdit() {
                   name="salvage"
                   value={formData.salvage}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -189,7 +185,7 @@ function ClaimDataEdit() {
                   name="totalrecovery"
                   value={formData.totalrecovery}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -199,7 +195,7 @@ function ClaimDataEdit() {
                   name="insured"
                   value={formData.insured}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -209,11 +205,9 @@ function ClaimDataEdit() {
                   name="dateofloss"
                   value={formData.dateofloss}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
-            </div>
-            <div className="w-70 flex flex-col gap-5 mt-4">
               <div className="flex flex-col gap-3 ">
                 <label>Agency</label>
                 <input
@@ -221,7 +215,7 @@ function ClaimDataEdit() {
                   name="agency"
                   value={formData.agency}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -231,7 +225,7 @@ function ClaimDataEdit() {
                   name="notificationdate"
                   value={formData.notificationdate}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -241,7 +235,7 @@ function ClaimDataEdit() {
                   name="regdate"
                   value={formData.regdate}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -251,7 +245,7 @@ function ClaimDataEdit() {
                   name="dateclaimpaid"
                   value={formData.dateclaimpaid}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
 
@@ -262,7 +256,7 @@ function ClaimDataEdit() {
                   name="risktype"
                   value={formData.risktype}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border border-2 border-[#8b6731] h-[35px]"
+                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />
               </div>
               <div className="flex flex-col gap-3">
@@ -272,10 +266,9 @@ function ClaimDataEdit() {
                   name="descriptionofloss"
                   value={formData.descriptionofloss}
                   onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 py-2 border border-2 border-[#8b6731] h-[80px] text-wrap"
+                  className="bg-gray-100 rounded-md outline-none px-2 py-2 border-2 border-[#8b6731] h-[80px] text-wrap"
                 />
               </div>
-            </div>
           </div>
           <div className="w-[100px] h-[30px] text-center text-stone-800  py-1 rounded-xl bg-[#fc973f] mt-9 mb-8 hover:bg-stone-900 hover:text-gray-200 duration-300">
             <ToastContainer

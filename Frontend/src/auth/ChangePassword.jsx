@@ -14,11 +14,10 @@ import api from "../api/axios";
 function ChangePassword() {
   const [temporarypassword, setTemporaryPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
+  const [newpassword_confirmation, setConfirmPassword] = useState("");
   const [showtemppass, setShowTempPass] = useState(false);
   const [shownewpass, setShowNewPass] = useState(false);
   const [showconfirmpass, setShowConfirmPass] = useState(false);
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,34 +26,54 @@ function ChangePassword() {
   // const handlePassword ()=>{
 
   //  }
-  //   const handleLogin = async (e) => {
-  //     e.preventDefault();
-  //     setLoading(true);
-  //     setError("");
+  const [form, setForm] = useState({
+    temporarypassword: "",
+    newpassword: "",
+    newpassword_confirmation: "",
+  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-  //     try {
-  //       const response = await axios.post("http://localhost:8000/api/login", {
-  //         email,
-  //         password,
-  //       });
+    try {
+      const response = await api.post(
+        "/changepassword",
+        {
+          temporarypassword,
+          newpassword,
+          newpassword_confirmation,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+            withCredentials: true 
 
-  //       const { access_token, user } = response.data;
-  //       localStorage.setItem("token", access_token);
+        }
+      );
 
-  //       toast.success("Logged in successfully!", { autoClose: 2000 });
+      const { access_token, user } = response.data;
 
-  //       setTimeout(() => {
-  //         navigate("/");
-  //       }, 2000);
-  //     } catch (err) {
-  //       const msg = err.response?.data?.message || "Login failed. Please try again.";
-  //       setError(msg);
-  //       toast.error(msg);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+      localStorage.setItem("token", access_token);
 
+      toast.success("Changed Password!", { autoClose: 1500 });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1600);
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        "Changing password failed. Please try again.";
+      setError(msg);
+      console.error(" error:", err);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
       <ToastContainer
@@ -78,7 +97,7 @@ function ChangePassword() {
       <div className="items-center justify-center flex flex-col py-30">
         <div className="bg-stone-900 sm:w-[400px] h-[350px] items-center justify-center flex flex-col gap-8">
           <p className="text-white text-2xl font-bold">Change Password</p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div>
               <div className="flex flex-col gap-5">
                 {/* <EyeOff color="white"/>  */}
@@ -135,10 +154,11 @@ function ChangePassword() {
                   </span>
                   <input
                     type={showconfirmpass ? "text" : "password"}
-                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8.5 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
-                    value={confirmpassword}
+                    name="newpassword_confirmation"
+                    value={newpassword_confirmation}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm password"
+                    className="placeholder:text-sm bg-stone-200 rounded-lg h-7 sm:w-60 px-8.5 focus:outline-[#f5a359] focus:outline-1 focus:outline-offset-2"
                     required
                   />
                   <span

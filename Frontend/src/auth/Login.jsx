@@ -46,7 +46,7 @@ function Login() {
       if (user.role === "Administrator") {
         navigate("/landingpage");
       } else if (user.role === "Claim") {
-        navigate("/claimtable");
+        navigate("/claim");
       } else if (user.role === "Production") {
         navigate("/production");
       } else {

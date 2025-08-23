@@ -6,12 +6,9 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import useStore from "../store/useStore";
 import csv from "../assets/images/csv.png";
 import { usePDF } from "react-to-pdf";
-import api  from "../api/axios"; 
+import api from "../api/axios";
 const Export = ({ onExport }) => (
   <div className="flex">
-    {/* <button className="text-white py-1 rounded-lg text-sm flex gap-2">
-      <img src={pdf} className="w-10" />
-    </button> */}
     <button
       onClick={onExport}
       className="text-white py-1 rounded-lg text-sm flex gap-2"
@@ -20,7 +17,6 @@ const Export = ({ onExport }) => (
     </button>
   </div>
 );
-
 // Converts JSON data to CSV string
 const convertArrayOfObjectsToCSV = (array) => {
   if (!array || !array.length) return null;
@@ -87,21 +83,19 @@ const customStyles = {
 };
 
 function ProductionTable() {
-  // const [data, setData] = useState(null);
-  // const [sortType, setSortType] = useState("");
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await api.get("/groupbytime");
-  //     setData(res.data); 
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // const sortedPosts = sortType && data ? data[sortType] : null;
-
   const [filterText, setFilterText] = useState("");
   const { production, fetchProduction, deleteProduction } = useStore();
+  const { fetchGroupedPosts, groupedPosts } = useStore();
+  const [selectedGroup, setSelectedGroup] = useState("");
+
+  useEffect(() => {
+    fetchGroupedPosts();
+  }, [fetchGroupedPosts]);
+  console.log();
+
+  const handleSelectedChange = (e) => {
+    setSelectedGroup(e.target.value);
+  };
 
   const actionsMemo = useMemo(
     () => <Export onExport={() => downloadCSV(production)} />,
@@ -117,7 +111,6 @@ function ProductionTable() {
     (sum, row) => sum + (parseFloat(row.suminsured) || 0),
     0
   );
-
   const premiumamount = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.premiumamount) || 0),
     0
@@ -134,6 +127,7 @@ function ProductionTable() {
     (sum, row) => sum + (parseFloat(row.retainedpremium) || 0),
     0
   );
+  const displayedData = groupedPosts[selectedGroup] || [];
   const dataWithTotal = [
     ...filteredData,
     {
@@ -162,6 +156,7 @@ function ProductionTable() {
   const conditionalRowStyles = [
     {
       when: (row) => row.branchcode === "Total",
+
       style: {
         fontWeight: "bold",
         backgroundColor: "#f7c9a0",
@@ -183,10 +178,14 @@ function ProductionTable() {
     fetchProduction();
   }, [fetchProduction]);
 
-  useEffect(() => {
-    // console.log("production:", production);
-  }, [production]);
+  useEffect(() => {}, [production]);
   const columns = [
+    // {
+    //   name: "ID",
+    //   selector: (row) => row.id,
+    //   sortable: true,
+    //   width: "100px",
+    // },
     {
       name: "Branch Code",
       selector: (row) => row.branchcode,
@@ -239,7 +238,7 @@ function ProductionTable() {
       selector: (row) => row.source,
       sortable: true,
     },
-{
+    {
       name: "SOB (Name)",
       selector: (row) => row.name,
       sortable: true,
@@ -263,26 +262,31 @@ function ProductionTable() {
     },
     {
       name: "Actions",
-      cell: (row) => (
-        <div className="flex gap-2">
-          <Link to={`/editproduction/${row.id}`}>
-            <button>
-              <SquarePen color="#fc8823" size={20} />
-            </button>
-          </Link>
-          <button onClick={() => handleDelete(row.id)}>
-            <Trash2 color="#851004" size={20} />
-          </button>
-        </div>
-      ),
+      cell: (row) => {
+        if (row.branchcode === "Total") {
+          return null;
+        }
+        return (
+          <div className="flex gap-2">
+            <Link to={`/editproduction/${row.id}`}>
+              <button>
+                <SquarePen color="#fc8823" size={20} />
+              </button>
+            </Link>
+
+            <div>
+              <button onClick={() => handleDelete(row.id)}>
+                <Trash2 color="#851004" size={20} />
+              </button>
+            </div>
+          </div>
+        );
+      },
     },
   ];
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   return (
     <div ref={targetRef} className="xl:w-[1200px] rounded-lg mx-auto w-full">
-      {/* <button onClick={() => toPDF()} className="">
-        pdf
-      </button> */}
       <div className="flex items-center justify-between">
         <p className="lg:text-xl text-lg py-3 font-semibold text-stone-900">
           Production Data Table
@@ -290,33 +294,16 @@ function ProductionTable() {
         <div className="text-[13px] flex sm:gap-5 gap-1">
           <div>
             <select
-              className="outline-none bg-[#f8d9be] rounded-lg w-23"
-              // value={sortType}
-              // onChange={(e) => setSortType(e.target.value)}
+              value={selectedGroup}
+              onChange={handleSelectedChange}
+              className="outline-none bg-[#f8d9be] rounded-lg w-24 py-2"
             >
-              <option disabled>sort by</option>
-              <option value="byDay">Day</option>
-              <option value="byWeek">Week</option>
-              <option value="byMonth">Month</option>
+              <option value={displayedData.all}>All</option>
+              <option value={displayedData.today}>Today</option>
+              <option value="thisWeek">This Week</option>
+              <option value="thisMonth">This Month</option>
             </select>
-{/* 
-            <div className="mt-4">
-              {sortedPosts &&
-                Object.entries(sortedPosts).map(([groupKey, posts]) => (
-                  <div key={groupKey} className="mb-4 p-2 border rounded">
-                    <h3 className="font-bold">{groupKey}</h3>
-                    <ul className="list-disc ml-4">
-                      {posts.map((post) => (
-                        <li key={post.id}>
-                          {post.nameofinsured} ({post.policynumber})
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-            </div> */}
           </div>
-
           <div className="flex relative">
             <span className=" absolute mx-2 mt-2 flex items-center">
               <Search size={20} color="#292524" />
