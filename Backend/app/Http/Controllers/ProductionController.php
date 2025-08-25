@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\productionPost;
 use Illuminate\Http\Request;
 use App\Models\Source;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class ProductionController extends Controller
 {
@@ -18,7 +22,7 @@ class ProductionController extends Controller
             'enddate' => 'required',
             "suminsured" => 'required',
             "premiumamount" => 'required',
-            'commissionamount' => 'required',
+            // 'commissionamount' => 'required',
             // "netpremium" => 'required',
             "retainedpremium" => 'required',
             "naicom" => 'required',
@@ -39,7 +43,7 @@ class ProductionController extends Controller
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
         $productionmodel->premiumamount = $request->premiumamount;
-        $productionmodel->commissionamount = $request->commissionamount;
+        // $productionmodel->commissionamount = $request->commissionamount;
         // $productionmodel->netpremium = $request->netpremium;
         $productionmodel->retainedpremium = $request->retainedpremium;
         $productionmodel->naicom = $request->naicom;
@@ -49,10 +53,8 @@ class ProductionController extends Controller
         $productionmodel->sourceofbusiness = $request->sourceofbusiness;
         $productionmodel->name = $request->name;
         $productionmodel->source = $request->source;
-
+        $productionmodel->user_id = Auth::id();
         $productionmodel->save();
-
-
         return response()->json(['status' => 200, 'msg' => 'Production data saved successfully']);
     }
 
@@ -66,7 +68,7 @@ class ProductionController extends Controller
             'enddate' => 'required',
             "suminsured" => 'required',
             "premiumamount" => 'required',
-            'commissionamount' => 'required',
+            // 'commissionamount' => 'required',
             // "netpremium" => 'required',
             "retainedpremium" => 'required',
             "naicom" => 'required',
@@ -83,7 +85,7 @@ class ProductionController extends Controller
         $productionmodel->enddate = $request->enddate;
         $productionmodel->suminsured = $request->suminsured;
         $productionmodel->premiumamount = $request->premiumamount;
-        $productionmodel->commissionamount = $request->commissionamount;
+        // $productionmodel->commissionamount = $request->commissionamount;
         // $productionmodel->netpremium = $request->netpremium;
         $productionmodel->retainedpremium = $request->retainedpremium;
         $productionmodel->naicom = $request->naicom;
@@ -118,6 +120,14 @@ class ProductionController extends Controller
         productionPost::where(['id' => $request->id])->delete();
         return response()->json(['status' => 200, 'msg' => 'Row deleted!']);
     }
+    public function scopeForUser($query, $user)
+    {
+        if ($user->role === 'Administrator') {
+            return $query; 
+        }
+        return $query->where('user_id', $user->id);
+    }
+
     public function groupByTime()
     {
         $today = \Carbon\Carbon::today();
@@ -140,7 +150,6 @@ class ProductionController extends Controller
         $all = productionPost::orderBy('created_at')->get();
         return response()->json([
             'all' => $all,
-
             'today' => $todayPosts,
             'thisWeek' => $weekPosts,
             'thisMonth' => $monthPosts,

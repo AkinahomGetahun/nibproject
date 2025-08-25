@@ -12,18 +12,18 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
-        // Register global middleware here if needed
-        // $middleware->append(\App\Http\Middleware\CheckRole::class);
+    // ->withMiddleware(function (Middleware $middleware) {
+    //     // Register global middleware here if needed
+    //     // $middleware->append(\App\Http\Middleware\CheckRole::class);
 
-    })
-    //   ->withRouteMiddleware([
-    //         'role' => \App\Http\Middleware\CheckRole::class,
-    //     ])
-    // ->withMiddleware([
-    //     // Global middleware (runs on every request)
-    //     \App\Http\Middleware\CheckRole::class,
-    // ])
+    // })
+    ->withMiddleware(function (Middleware $middleware) {
+         $middleware->alias([
+         'checkrole' => \App\Http\Middleware\CheckRole::class,
+    ]);
+            
+        })
+        
     ->withExceptions(function (Exceptions $exceptions): void {
         // Exception handling
     })->create();

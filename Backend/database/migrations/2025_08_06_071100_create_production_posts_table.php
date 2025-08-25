@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('naicom');
             $table->string('transactiontype');
             $table->string('reciept');
-            // $table->decimal('rate');
+            $table->unsignedBigInteger('user_id');
             // $table->string('name')->nullable()->change();
             $table->timestamps();
         });

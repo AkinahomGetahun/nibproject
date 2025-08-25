@@ -172,11 +172,19 @@ function ClaimTable() {
 
   const handleDelete = async (id) => {
     try {
-      await deleteClaim(id);
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this production?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      await deleteProduction(id);
       toast.success("Claim deleted successfully!");
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to delete claim.");
+      toast.error("Failed to delete claim");
+      console.error(error);
     }
   };
   const columns = [

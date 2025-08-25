@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect } from "react";
+import linechart from "./charts/LineChart";
 function Layout() {
   const { activePath, setActivePath } = useStore();
   const [error, setError] = useState("");

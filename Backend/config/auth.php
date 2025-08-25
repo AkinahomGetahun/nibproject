@@ -45,6 +45,7 @@ return [
         'driver' => 'sanctum', // or 'passport' if using Passport
         'provider' => 'users',
     ],
+    
 ],
 
 

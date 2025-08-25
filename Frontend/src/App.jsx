@@ -10,11 +10,16 @@ import ProductionDataEdit from "./EditData/ProductionDataEdit";
 import ClaimDataEdit from "./EditData/ClaimDataEdit";
 import ChangePassword from "./auth/ChangePassword";
 import LandingPageCharts from "./charts/LandingPageCharts";
+import LineChart from "./charts/LineChart"
+import BarChart from "./charts/LineChart";
+
 function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="landingpage" element={<LandingPageCharts />} />
+        <Route path="linechart" element={<LineChart />} />
+        <Route path="barchart" element={<BarChart />} />
         <Route path="claim" element={<Claim />} />
         <Route path="production" element={<Production />} />
         <Route path="claimtable" element={<ClaimTable />} />

@@ -15,9 +15,9 @@ function production() {
     enddate: " ",
     suminsured: " ",
     premiumamount: " ",
-    commissionamount: " ",
+    // commissionamount: " ",
     retainedpremium: " ",
-    transactiontype:"",
+    transactiontype: "",
     naicom: " ",
     reciept: "",
     rate: " ",
@@ -25,14 +25,23 @@ function production() {
     name: "",
   });
   const [error, setError] = useState();
+  // const handleSourceChange = (src) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     source: src,
+  //     name: "", // reset
+  //     rate: "", // reset
+  //   }));
+  // };
   const handleSourceChange = (src) => {
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((prevData) => ({
+      ...prevData,
       source: src,
-      name: "", // reset
-      rate: "", // reset
+      name: src === "Direct" ? "" : prevData.name,
+      rate: src === "Direct" ? "0" : prevData.rate,
     }));
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -188,10 +197,11 @@ function production() {
             <p className=" text-stone-900 font-semibold py-7">
               Source of Business
             </p>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-15 gap-y-8 items-center justify-center ">
+
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-15 gap-y-8 ">
               {sources.map((src) => (
-                <div key={src} className="grid gap-9">
-                  <div className="flex gap-6 items-center">
+                <div key={src} className="grid gap-7 ">
+                  <div className="">
                     <input
                       type="radio"
                       id={src}
@@ -199,38 +209,49 @@ function production() {
                       checked={formData.source === src}
                       onChange={() => handleSourceChange(src)}
                     />
-                    <label htmlFor={src}>{src}</label>
+                    <label className="px-3" htmlFor={src}>
+                      {src}
+                    </label>
                   </div>
-
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={formData.source === src ? formData.name : ""}
-                    onChange={handleChange}
-                    disabled={formData.source !== src}
-                    className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
+                  {src !== "Direct" && (
+                    <>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        value={formData.source === src ? formData.name : ""}
+                        onChange={handleChange}
+                        disabled={formData.source !== src}
+                        className={`bg-stone-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${formData.source === src ? "border-[#8b6731]" : "border-stone-400"}`}
-                  />
-
-                  <input
-                    type="text"
-                    name="rate"
-                    placeholder="rate (0.15)"
-                    value={formData.source === src ? formData.rate : ""}
-                    onChange={handleChange}
-                    disabled={formData.source !== src}
-                    className={`bg-gray-100 rounded-md outline-none px-2 h-[35px]
+              ${
+                formData.source === src
+                  ? "border-[#8b6731]"
+                  : "border-stone-400"
+              }`}
+                      />
+                      <input
+                        type="number"
+                        name="rate"
+                        placeholder="rate (0.15)"
+                        value={formData.source === src ? formData.rate : ""}
+                        onChange={handleChange}
+                        disabled={formData.source !== src}
+                        className={`bg-stone-100 rounded-md outline-none px-2 h-[35px]
               border-2 
-              ${formData.source === src ? "border-[#8b6731] transition" : "border-stone-400"}`}
-                  />
+              ${
+                formData.source === src
+                  ? "border-[#8b6731] transition"
+                  : "border-stone-400"
+              }`}
+                      />
+                    </>
+                  )}
                 </div>
               ))}
             </div>
             <hr className="lg:w-[800px] text-stone-200 items-center justify-center px-7 mt-9" />
             <hr className="lg:w-[800px] text-stone-200  items-center justify-center px-7  " />
-
             <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:px-0 px-3 gap-x-15 gap-y-8 items-center justify-center py-8 ">
               <div className="flex flex-col gap-3">
                 <label>Sum Insured</label>
@@ -248,16 +269,6 @@ function production() {
                   type="text"
                   name="premiumamount"
                   value={formData.premiumamount}
-                  onChange={handleChange}
-                  className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label>Commission Amount</label>
-                <input
-                  type="text"
-                  name="commissionamount"
-                  value={formData.commissionamount}
                   onChange={handleChange}
                   className="bg-gray-100 rounded-md outline-none px-2 border-2 border-[#8b6731] h-[35px]"
                 />

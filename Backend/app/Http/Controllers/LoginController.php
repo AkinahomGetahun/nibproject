@@ -48,10 +48,10 @@ class LoginController extends Controller
     {
         $user = Auth::user();
         \Log::info('Authenticated user:', [
-        'id' => $user->id ?? 'null',
-        'role' => $user->role ?? 'null',
-        'email' => $user->email ?? 'null',
-    ]);
+            'id' => $user->id ?? 'null',
+            'role' => $user->role ?? 'null',
+            'email' => $user->email ?? 'null',
+        ]);
         if (!$user) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
@@ -61,6 +61,20 @@ class LoginController extends Controller
         return response()->json(['users' => $users]);
     }
 
+    public function scopeForUser($query, $user)
+    {
+        $user = Auth::user();
+        Log::info('User role: ' . $user->role);
+        Log::info('User ID: ' . $user->id);
+
+        if ($user->role === 'Administrator') {
+            Log::info('Admin user detected, returning full query');
+            return $query;
+        }
+
+        Log::info('Filtering by id = ' . $user->id);
+        return $query->where('id', $user->id);
+    }
     public function logout(Request $request)
     {
         $user = $request->user();

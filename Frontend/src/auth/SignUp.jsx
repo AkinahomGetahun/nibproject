@@ -49,7 +49,7 @@ function SignUp() {
         password: "",
         password_confirmation: "",
       });
-      navigate("/");
+      navigate("/changepassword");
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
       setError(msg);

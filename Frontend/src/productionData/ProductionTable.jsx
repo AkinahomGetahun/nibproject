@@ -86,7 +86,7 @@ function ProductionTable() {
   const [filterText, setFilterText] = useState("");
   const { production, fetchProduction, deleteProduction } = useStore();
   const { fetchGroupedPosts, groupedPosts } = useStore();
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState("all");
 
   useEffect(() => {
     fetchGroupedPosts();
@@ -101,12 +101,28 @@ function ProductionTable() {
     () => <Export onExport={() => downloadCSV(production)} />,
     [production]
   );
-  const filteredData = production.filter((item) =>
+  const displayedData =
+    selectedGroup === "all" ? production : groupedPosts[selectedGroup] || [];
+  //new
+  const filteredData = displayedData.filter((item) =>
     Object.values(item)
       .join(" ")
       .toLowerCase()
       .includes(filterText.toLowerCase())
   );
+  // new
+  useEffect(() => {
+    fetchGroupedPosts();
+  }, [fetchGroupedPosts]);
+  console.log();
+  useEffect(() => {
+    if (selectedGroup) {
+      console.log("Selected group:", selectedGroup);
+      console.log("Data length:", displayedData.length);
+      console.log("Data preview:", displayedData);
+    }
+  }, [selectedGroup, displayedData]);
+  //
   const suminsured = filteredData.reduce(
     (sum, row) => sum + (parseFloat(row.suminsured) || 0),
     0
@@ -127,7 +143,6 @@ function ProductionTable() {
     (sum, row) => sum + (parseFloat(row.retainedpremium) || 0),
     0
   );
-  const displayedData = groupedPosts[selectedGroup] || [];
   const dataWithTotal = [
     ...filteredData,
     {
@@ -145,7 +160,6 @@ function ProductionTable() {
       naicom: "-",
       transactiontype: "-",
       rate: "-",
-      sourceofbusiness: "",
       source: "",
       name: "",
       created_at: "-",
@@ -166,11 +180,19 @@ function ProductionTable() {
   ];
   const handleDelete = async (id) => {
     try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this production?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
       await deleteProduction(id);
-      toast.success("Claim deleted successfully!");
+      toast.success("Production deleted successfully!");
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to delete claim.");
+      toast.error("Failed to delete production");
+      console.error(error);
     }
   };
 
@@ -227,12 +249,14 @@ function ProductionTable() {
       selector: (row) => row.premiumamount,
       sortable: true,
     },
-    {
-      name: "Commission Amount",
-      selector: (row) => row.commissionamount,
+    { name: "Commission Amount", selector: (row) => row.commissionamount, sortable: true },
+
+    { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
+      {
+      name: "Retained Premium",
+      selector: (row) => row.retainedpremium,
       sortable: true,
     },
-    { name: "Net Premium", selector: (row) => row.netpremium, sortable: true },
     {
       name: "SOB (Source)",
       selector: (row) => row.source,
@@ -243,13 +267,8 @@ function ProductionTable() {
       selector: (row) => row.name,
       sortable: true,
     },
-    { name: "SOB (Rate)", selector: (row) => row.rate, sortable: true },
 
-    {
-      name: "Retained Premium",
-      selector: (row) => row.retainedpremium,
-      sortable: true,
-    },
+  
     {
       name: "Created At",
       selector: (row) => row.created_at,
@@ -296,10 +315,10 @@ function ProductionTable() {
             <select
               value={selectedGroup}
               onChange={handleSelectedChange}
-              className="outline-none bg-[#f8d9be] rounded-lg w-24 py-2"
+              className="outline-none bg-[#fde8d4]  rounded-lg w-24 py-2 text-center"
             >
-              <option value={displayedData.all}>All</option>
-              <option value={displayedData.today}>Today</option>
+              <option value="all">All</option>
+              <option value="today">Today</option>
               <option value="thisWeek">This Week</option>
               <option value="thisMonth">This Month</option>
             </select>

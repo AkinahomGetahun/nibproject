@@ -4,10 +4,8 @@ import LineChart from "./LineChart.jsx";
 const LandingPageCharts = () => {
   return (
     <div className=" ">
-    <BarChart/>
-      
+    <BarChart />
     <LineChart />
-      
     </div>
   );
 };

@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Log;
 
@@ -49,18 +50,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-   public function scopeForUser($query, $user)
-{
-    Log::info('User role: ' . $user->role);
-    Log::info('User ID: ' . $user->id);
+  
+ public function index()
+    {
+        $user = Auth::user();
 
-    if ($user->role === 'Administrator') {
-        Log::info('Admin user detected, returning full query');
-        return $query;
+        $user = User::forUser($user)->get();
+
+        \Log::info('Productions fetched for user ' . $user->id, [
+            'record_ids' => $user->pluck('id')->toArray()
+        ]);
+
+        return response()->json($user);
     }
-
-    Log::info('Filtering by id = ' . $user->id);
-    return $query->where('id', $user->id);
-}
 
 }
